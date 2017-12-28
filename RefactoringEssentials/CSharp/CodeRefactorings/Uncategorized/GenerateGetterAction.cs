@@ -79,9 +79,8 @@ namespace RefactoringEssentials.CSharp.CodeRefactorings
             var getter = property.AccessorList?.Accessors.FirstOrDefault(a => a.IsKind(SyntaxKind.GetAccessorDeclaration));
             if (getter == null || getter.Body?.Statements.Count != 1)
                 return false;
-#if RE2017
-#warning "Check for get => ExpressionBody!"
-#endif
+
+            // FIXME For RE2017: "Check for get => ExpressionBody!"
             var ret = getter.Body?.Statements.Single() as ReturnStatementSyntax;
             if (ret == null)
                 return false;

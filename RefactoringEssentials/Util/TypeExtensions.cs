@@ -16,9 +16,9 @@ namespace RefactoringEssentials
 	static class TypeExtensions
     {
         [RoslynReflectionUsage(RoslynReflectionAllowedContext.CodeFixes)]
-        public static TypeSyntax GenerateTypeSyntax(this ITypeSymbol typeSymbol, SyntaxAnnotation simplifierAnnotation = null)
+        public static TypeSyntax GenerateTypeSyntax(this ITypeSymbol typeSymbol, SyntaxAnnotation simplifierAnnotation = null, bool allowVar = false)
         {
-            var typeSyntax = (TypeSyntax)RoslynReflection.CSharpITypeSymbolExtensions.GenerateTypeSyntaxMethod.Invoke(null, new object[] { typeSymbol });
+            var typeSyntax = (TypeSyntax)RoslynReflection.CSharpITypeSymbolExtensions.GenerateTypeSyntaxMethod.Invoke(null, new object[] { typeSymbol, allowVar });
             if (simplifierAnnotation != null)
                 return typeSyntax.WithAdditionalAnnotations(simplifierAnnotation);
             return typeSyntax;
@@ -232,4 +232,3 @@ namespace RefactoringEssentials
         }
     }
 }
-

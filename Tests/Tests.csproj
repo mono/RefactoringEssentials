@@ -333,7 +333,6 @@
     <Compile Include="CSharp\Diagnostics\ConvertIfToAndExpressionTests.cs" />
     <Compile Include="CSharp\Diagnostics\ConvertIfToOrExpressionTests.cs" />
     <Compile Include="CSharp\Diagnostics\ConvertNullableToShortFormTests.cs" />
-    <Compile Include="CSharp\Diagnostics\ConvertToAutoPropertyTests.cs" />
     <Compile Include="CSharp\Diagnostics\ConvertToConstantTests.cs" />
     <Compile Include="CSharp\Diagnostics\ConvertToLambdaExpressionTests.cs" />
     <Compile Include="CSharp\Diagnostics\ConvertToStaticTypeTests.cs" />

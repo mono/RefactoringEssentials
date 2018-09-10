@@ -193,7 +193,6 @@
     <Compile Include="CSharp\CodeFixes\CS0132StaticConstructorParameterTests.cs" />
     <Compile Include="CSharp\CodeFixes\CS0152DuplicateCaseLabelValueTests.cs" />
     <Compile Include="CSharp\CodeFixes\CS0164LabelHasNotBeenReferencedTests.cs" />
-    <Compile Include="CSharp\CodeFixes\CS0168LocalVariableNotUsedCodeFixProviderTests.cs" />
     <Compile Include="CSharp\CodeFixes\CS0759RedundantPartialMethodTests.cs" />
     <Compile Include="CSharp\CodeFixes\CS1105ExtensionMethodMustBeDeclaredStaticTests.cs" />
     <Compile Include="CSharp\CodeFixes\CS1520MethodMustHaveAReturnTypeTests.cs" />

@@ -198,7 +198,6 @@
     <Compile Include="CSharp\CodeFixes\CSharpCodeFixTestBase.cs" />
     <Compile Include="CSharp\CodeFixes\InvalidConversionTests.cs" />
     <Compile Include="CSharp\CodeFixes\ReturnMustNotBeFollowedByAnyExpressionCodeFixProviderTests.cs" />
-    <Compile Include="CSharp\CodeFixes\UnreachableCodeTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\AddAnotherAccessorTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\AddArgumentNameTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\AddBracesTests.cs" />

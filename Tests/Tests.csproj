@@ -358,7 +358,6 @@
     <Compile Include="CSharp\Diagnostics\EnumUnderlyingTypeIsIntTests.cs" />
     <Compile Include="CSharp\Diagnostics\EqualExpressionComparisonTests.cs" />
     <Compile Include="CSharp\Diagnostics\EventUnsubscriptionViaAnonymousDelegateTests.cs" />
-    <Compile Include="CSharp\Diagnostics\FieldCanBeMadeReadOnlyTests.cs" />
     <Compile Include="CSharp\Diagnostics\ForCanBeConvertedToForeachTests.cs" />
     <Compile Include="CSharp\Diagnostics\ForControlVariableIsNeverModifiedTests.cs" />
     <Compile Include="CSharp\Diagnostics\FormatStringProblemTests.cs" />

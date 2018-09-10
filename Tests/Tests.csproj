@@ -221,7 +221,6 @@
     <Compile Include="CSharp\CodeRefactorings\ConvertAutoPropertyToPropertyTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertBitwiseFlagComparisonToHasFlagsTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertCoalescingToConditionalExpressionTests.cs" />
-    <Compile Include="CSharp\CodeRefactorings\ConvertDecToHexTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertDoWhileToWhileLoopTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertEqualityOperatorToEqualsTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertEqualityOperatorToReferenceEqualsTests.cs" />
@@ -231,7 +230,6 @@
     <Compile Include="CSharp\CodeRefactorings\ConvertForeachToForTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertForToWhileTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertHasFlagsToBitwiseFlagComparisonTests.cs" />
-    <Compile Include="CSharp\CodeRefactorings\ConvertHexToDecTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertIfStatementToNullCoalescingExpressionActionTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertIfStatementToSwitchStatementTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertImplicitToExplicittImplementationTests.cs" />

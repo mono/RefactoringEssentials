@@ -189,7 +189,6 @@
     <Compile Include="Common\ConverterTestBase.cs" />
     <Compile Include="Common\DiagnosticTestBase.cs" />
     <Compile Include="Common\Utils.cs" />
-    <Compile Include="CSharp\CodeFixes\CS0108UseNewKeywordIfHidingIntendedTests.cs" />
     <Compile Include="CSharp\CodeFixes\CS0132StaticConstructorParameterTests.cs" />
     <Compile Include="CSharp\CodeFixes\CS0152DuplicateCaseLabelValueTests.cs" />
     <Compile Include="CSharp\CodeFixes\CS0164LabelHasNotBeenReferencedTests.cs" />

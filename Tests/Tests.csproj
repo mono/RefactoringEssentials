@@ -272,7 +272,6 @@
     <Compile Include="CSharp\CodeRefactorings\IntroduceConstantTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\IntroduceFormatItemTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\InvertConditionalOperatorTests.cs" />
-    <Compile Include="CSharp\CodeRefactorings\InvertIfTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\InvertLogicalExpressionTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\InvokeAsStaticMethodTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\IterateViaForeachTests.cs" />
@@ -483,7 +482,6 @@
     <Compile Include="VB\CodeRefactorings\CopyCommentsFromBaseTests.cs" />
     <Compile Include="VB\CodeRefactorings\CreateChangedEventTests.cs" />
     <Compile Include="VB\CodeRefactorings\CreateOverloadWithoutParameterTests.cs" />
-    <Compile Include="VB\CodeRefactorings\InvertIfTests.cs" />
     <Compile Include="VB\CodeRefactorings\InvertLogicalExpressionTests.cs" />
     <Compile Include="VB\CodeRefactorings\ReplaceDirectCastWithSafeCastTests.cs" />
     <Compile Include="VB\CodeRefactorings\ReplaceSafeCastWithDirectCastTests.cs" />

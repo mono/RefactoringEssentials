@@ -232,9 +232,7 @@
     <Compile Include="CSharp\CodeRefactorings\ConvertForToWhileTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertHasFlagsToBitwiseFlagComparisonTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertHexToDecTests.cs" />
-    <Compile Include="CSharp\CodeRefactorings\ConvertIfStatementToConditionalTernaryExpressionTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertIfStatementToNullCoalescingExpressionActionTests.cs" />
-    <Compile Include="CSharp\CodeRefactorings\ConvertIfStatementToReturnStatementActionTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertIfStatementToSwitchStatementTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertImplicitToExplicittImplementationTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertInstanceToStaticMethodCodeRefactoringTests.cs" />

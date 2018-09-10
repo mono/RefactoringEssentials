@@ -331,7 +331,6 @@
     <Compile Include="CSharp\Diagnostics\ConstantConditionTests.cs" />
     <Compile Include="CSharp\Diagnostics\ConstantNullCoalescingConditionTests.cs" />
     <Compile Include="CSharp\Diagnostics\ConvertClosureToMethodGroupTests.cs" />
-    <Compile Include="CSharp\Diagnostics\ConvertConditionalTernaryToNullCoalescingTests.cs" />
     <Compile Include="CSharp\Diagnostics\ConvertIfDoToWhileTests.cs" />
     <Compile Include="CSharp\Diagnostics\ConvertIfStatementToSwitchStatementTests.cs" />
     <Compile Include="CSharp\Diagnostics\ConvertIfToAndExpressionTests.cs" />

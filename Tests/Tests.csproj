@@ -189,18 +189,15 @@
     <Compile Include="Common\ConverterTestBase.cs" />
     <Compile Include="Common\DiagnosticTestBase.cs" />
     <Compile Include="Common\Utils.cs" />
-    <Compile Include="CSharp\CodeFixes\CS0108UseNewKeywordIfHidingIntendedTests.cs" />
     <Compile Include="CSharp\CodeFixes\CS0132StaticConstructorParameterTests.cs" />
     <Compile Include="CSharp\CodeFixes\CS0152DuplicateCaseLabelValueTests.cs" />
     <Compile Include="CSharp\CodeFixes\CS0164LabelHasNotBeenReferencedTests.cs" />
-    <Compile Include="CSharp\CodeFixes\CS0168LocalVariableNotUsedCodeFixProviderTests.cs" />
     <Compile Include="CSharp\CodeFixes\CS0759RedundantPartialMethodTests.cs" />
     <Compile Include="CSharp\CodeFixes\CS1105ExtensionMethodMustBeDeclaredStaticTests.cs" />
     <Compile Include="CSharp\CodeFixes\CS1520MethodMustHaveAReturnTypeTests.cs" />
     <Compile Include="CSharp\CodeFixes\CSharpCodeFixTestBase.cs" />
     <Compile Include="CSharp\CodeFixes\InvalidConversionTests.cs" />
     <Compile Include="CSharp\CodeFixes\ReturnMustNotBeFollowedByAnyExpressionCodeFixProviderTests.cs" />
-    <Compile Include="CSharp\CodeFixes\UnreachableCodeTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\AddAnotherAccessorTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\AddArgumentNameTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\AddBracesTests.cs" />
@@ -224,7 +221,6 @@
     <Compile Include="CSharp\CodeRefactorings\ConvertAutoPropertyToPropertyTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertBitwiseFlagComparisonToHasFlagsTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertCoalescingToConditionalExpressionTests.cs" />
-    <Compile Include="CSharp\CodeRefactorings\ConvertDecToHexTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertDoWhileToWhileLoopTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertEqualityOperatorToEqualsTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertEqualityOperatorToReferenceEqualsTests.cs" />
@@ -234,10 +230,7 @@
     <Compile Include="CSharp\CodeRefactorings\ConvertForeachToForTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertForToWhileTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertHasFlagsToBitwiseFlagComparisonTests.cs" />
-    <Compile Include="CSharp\CodeRefactorings\ConvertHexToDecTests.cs" />
-    <Compile Include="CSharp\CodeRefactorings\ConvertIfStatementToConditionalTernaryExpressionTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertIfStatementToNullCoalescingExpressionActionTests.cs" />
-    <Compile Include="CSharp\CodeRefactorings\ConvertIfStatementToReturnStatementActionTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertIfStatementToSwitchStatementTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertImplicitToExplicittImplementationTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertInstanceToStaticMethodCodeRefactoringTests.cs" />
@@ -277,7 +270,6 @@
     <Compile Include="CSharp\CodeRefactorings\IntroduceConstantTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\IntroduceFormatItemTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\InvertConditionalOperatorTests.cs" />
-    <Compile Include="CSharp\CodeRefactorings\InvertIfTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\InvertLogicalExpressionTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\InvokeAsStaticMethodTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\IterateViaForeachTests.cs" />
@@ -334,13 +326,11 @@
     <Compile Include="CSharp\Diagnostics\ConstantConditionTests.cs" />
     <Compile Include="CSharp\Diagnostics\ConstantNullCoalescingConditionTests.cs" />
     <Compile Include="CSharp\Diagnostics\ConvertClosureToMethodGroupTests.cs" />
-    <Compile Include="CSharp\Diagnostics\ConvertConditionalTernaryToNullCoalescingTests.cs" />
     <Compile Include="CSharp\Diagnostics\ConvertIfDoToWhileTests.cs" />
     <Compile Include="CSharp\Diagnostics\ConvertIfStatementToSwitchStatementTests.cs" />
     <Compile Include="CSharp\Diagnostics\ConvertIfToAndExpressionTests.cs" />
     <Compile Include="CSharp\Diagnostics\ConvertIfToOrExpressionTests.cs" />
     <Compile Include="CSharp\Diagnostics\ConvertNullableToShortFormTests.cs" />
-    <Compile Include="CSharp\Diagnostics\ConvertToAutoPropertyTests.cs" />
     <Compile Include="CSharp\Diagnostics\ConvertToConstantTests.cs" />
     <Compile Include="CSharp\Diagnostics\ConvertToLambdaExpressionTests.cs" />
     <Compile Include="CSharp\Diagnostics\ConvertToStaticTypeTests.cs" />
@@ -358,7 +348,6 @@
     <Compile Include="CSharp\Diagnostics\EnumUnderlyingTypeIsIntTests.cs" />
     <Compile Include="CSharp\Diagnostics\EqualExpressionComparisonTests.cs" />
     <Compile Include="CSharp\Diagnostics\EventUnsubscriptionViaAnonymousDelegateTests.cs" />
-    <Compile Include="CSharp\Diagnostics\FieldCanBeMadeReadOnlyTests.cs" />
     <Compile Include="CSharp\Diagnostics\ForCanBeConvertedToForeachTests.cs" />
     <Compile Include="CSharp\Diagnostics\ForControlVariableIsNeverModifiedTests.cs" />
     <Compile Include="CSharp\Diagnostics\FormatStringProblemTests.cs" />
@@ -474,7 +463,6 @@
     <Compile Include="CSharp\Diagnostics\ValueParameterNotUsedTests.cs" />
     <Compile Include="CSharp\Diagnostics\XmlDocTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Samples\CSharp\SampleCodeRefactoringTests.cs" />
     <Compile Include="SymbolChecksTest.cs" />
     <Compile Include="VB\CodeRefactorings\AddAnotherAccessorTests.cs" />
     <Compile Include="VB\CodeRefactorings\AddCheckForNothingTests.cs" />
@@ -491,7 +479,6 @@
     <Compile Include="VB\CodeRefactorings\CopyCommentsFromBaseTests.cs" />
     <Compile Include="VB\CodeRefactorings\CreateChangedEventTests.cs" />
     <Compile Include="VB\CodeRefactorings\CreateOverloadWithoutParameterTests.cs" />
-    <Compile Include="VB\CodeRefactorings\InvertIfTests.cs" />
     <Compile Include="VB\CodeRefactorings\InvertLogicalExpressionTests.cs" />
     <Compile Include="VB\CodeRefactorings\ReplaceDirectCastWithSafeCastTests.cs" />
     <Compile Include="VB\CodeRefactorings\ReplaceSafeCastWithDirectCastTests.cs" />

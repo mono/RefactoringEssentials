@@ -210,7 +210,6 @@
     <Compile Include="CSharp\CodeRefactorings\CheckArrayIndexValueTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\CheckCollectionIndexValueTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\CheckDictionaryKeyValueTests.cs" />
-    <Compile Include="CSharp\CodeRefactorings\CheckIfParameterIsNullTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\CheckStringBuilderIndexValueTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\CheckStringIndexValueTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ComputeConstantValueTests.cs" />
@@ -218,7 +217,6 @@
     <Compile Include="CSharp\CodeRefactorings\ContractRequiresNotNullTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ContractRequiresStringNotNullOrEmptyTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertAnonymousMethodToLambdaTests.cs" />
-    <Compile Include="CSharp\CodeRefactorings\ConvertAutoPropertyToPropertyTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertBitwiseFlagComparisonToHasFlagsTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertCoalescingToConditionalExpressionTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ConvertDoWhileToWhileLoopTests.cs" />
@@ -451,7 +449,6 @@
     <Compile Include="CSharp\Diagnostics\StringIndexOfIsCultureSpecificTests.cs" />
     <Compile Include="CSharp\Diagnostics\StringLastIndexOfIsCultureSpecificTests.cs" />
     <Compile Include="CSharp\Diagnostics\StringStartsWithIsCultureSpecificTests.cs" />
-    <Compile Include="CSharp\Diagnostics\SuggestUseVarKeywordEvidentTests.cs" />
     <Compile Include="CSharp\Diagnostics\ThreadStaticAtInstanceFieldTests.cs" />
     <Compile Include="CSharp\Diagnostics\UnusedAnonymousMethodSignatureTests.cs" />
     <Compile Include="CSharp\Diagnostics\UnusedParameterTests.cs" />

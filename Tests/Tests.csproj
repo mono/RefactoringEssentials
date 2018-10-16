@@ -412,14 +412,12 @@
     <Compile Include="CSharp\Diagnostics\RedundantExplicitNullableCreationTests.cs" />
     <Compile Include="CSharp\Diagnostics\RedundantExtendsListEntryTests.cs" />
     <Compile Include="CSharp\Diagnostics\RedundantIfElseBlockTests.cs" />
-    <Compile Include="CSharp\Diagnostics\RedundantInternalInspectorTests.cs" />
     <Compile Include="CSharp\Diagnostics\RedundantLambdaParameterTypeTests.cs" />
     <Compile Include="CSharp\Diagnostics\RedundantLambdaSignatureParenthesesTests.cs" />
     <Compile Include="CSharp\Diagnostics\RedundantLogicalConditionalExpressionOperandTests.cs" />
     <Compile Include="CSharp\Diagnostics\RedundantObjectCreationArgumentListTests.cs" />
     <Compile Include="CSharp\Diagnostics\RedundantObjectOrCollectionInitializerTests.cs" />
     <Compile Include="CSharp\Diagnostics\RedundantOverriddenMemberTests.cs" />
-    <Compile Include="CSharp\Diagnostics\RedundantPrivateInspectorTests.cs" />
     <Compile Include="CSharp\Diagnostics\RedundantStringToCharArrayCallTests.cs" />
     <Compile Include="CSharp\Diagnostics\RedundantTernaryExpressionTests.cs" />
     <Compile Include="CSharp\Diagnostics\RedundantToStringCallTests.cs" />

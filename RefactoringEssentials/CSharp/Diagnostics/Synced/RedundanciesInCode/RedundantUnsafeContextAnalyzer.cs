@@ -116,6 +116,12 @@ namespace RefactoringEssentials.CSharp.Diagnostics
                 unsafeStateStack.Peek().UseUnsafeConstructs = true;
             }
 
+            bool IsUnsafeContext()
+            {
+                if (unsafeStateStack.Count == 0)
+                    return false;
+                return unsafeStateStack.Peek().InUnsafeContext;
+            }
 
             public override void VisitClassDeclaration(ClassDeclarationSyntax node)
             {
@@ -166,6 +172,8 @@ namespace RefactoringEssentials.CSharp.Diagnostics
             public override void VisitIdentifierName(IdentifierNameSyntax node)
             {
                 base.VisitIdentifierName(node);
+                if (!IsUnsafeContext ())
+                    return;
 
                 ISymbol symbol = semanticModel.GetSymbolInfo(node).Symbol;
                 if (symbol != null)

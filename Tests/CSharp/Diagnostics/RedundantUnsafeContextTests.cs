@@ -165,5 +165,19 @@ class Foo
 }
 ");
         }
+
+        [Fact]
+        public void TestField()
+        {
+            Analyze<RedundantUnsafeContextAnalyzer>(@"$unsafe$ class Foo
+{
+    int field;
+}
+", @"class Foo
+{
+    int field;
+}
+");
+        }
     }
 }

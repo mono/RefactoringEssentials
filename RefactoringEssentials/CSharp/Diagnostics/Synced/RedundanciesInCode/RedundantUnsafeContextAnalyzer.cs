@@ -30,33 +30,19 @@ namespace RefactoringEssentials.CSharp.Diagnostics
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-            context.RegisterCompilationStartAction(compilationContext =>
-            {
-                var compilation = compilationContext.Compilation;
-                compilationContext.RegisterSyntaxTreeAction(delegate (SyntaxTreeAnalysisContext ctx)
-                {
-                    try
-                    {
-                        if (!compilation.SyntaxTrees.Contains(ctx.Tree))
-                            return;
-                        var semanticModel = compilation.GetSemanticModel(ctx.Tree);
-                        var root = ctx.Tree.GetRoot(ctx.CancellationToken);
-                        var model = compilationContext.Compilation.GetSemanticModel(ctx.Tree);
-                        if (model.IsFromGeneratedCode(compilationContext.CancellationToken))
-                            return;
-                        new GatherVisitor(ctx, semanticModel).Visit(root);
-                    }
-                    catch (OperationCanceledException) { }
-                });
-            });
+
+			context.RegisterSyntaxNodeAction(ctx =>
+			{
+				new GatherVisitor(ctx, ctx.SemanticModel).Visit(ctx.Node);
+			}, SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration);
         }
 
-        class GatherVisitor : CSharpSyntaxWalker
+		class GatherVisitor : CSharpSyntaxWalker
         {
-            SyntaxTreeAnalysisContext ctx;
+			SyntaxNodeAnalysisContext ctx;
             SemanticModel semanticModel;
 
-            public GatherVisitor(SyntaxTreeAnalysisContext ctx, SemanticModel semanticModel)
+            public GatherVisitor(SyntaxNodeAnalysisContext ctx, SemanticModel semanticModel)
             {
                 this.ctx = ctx;
                 this.semanticModel = semanticModel;
@@ -109,11 +95,11 @@ namespace RefactoringEssentials.CSharp.Diagnostics
             }
 
 
-            void MarkUnsafe()
+            void MarkUnsafe(bool isUnsafe = true)
             {
                 if (unsafeStateStack.Count == 0)
                     return;
-                unsafeStateStack.Peek().UseUnsafeConstructs = true;
+                unsafeStateStack.Peek().UseUnsafeConstructs = isUnsafe;
             }
 
             bool IsUnsafeContext()
@@ -137,10 +123,10 @@ namespace RefactoringEssentials.CSharp.Diagnostics
                 MarkUnsafe(node.Modifiers, isUnsafe);
             }
 
-            public override void VisitFieldDeclaration(FieldDeclarationSyntax node)
+			public override void VisitFieldDeclaration(FieldDeclarationSyntax node)
             {
-                base.VisitFieldDeclaration(node);
-                MarkUnsafe();
+				base.VisitFieldDeclaration(node);
+				MarkUnsafe(node.Modifiers.Any(m => m.IsKind(SyntaxKind.UnsafeKeyword) || m.IsKind(SyntaxKind.FixedKeyword)));
             }
 
             public override void VisitPointerType(PointerTypeSyntax node)

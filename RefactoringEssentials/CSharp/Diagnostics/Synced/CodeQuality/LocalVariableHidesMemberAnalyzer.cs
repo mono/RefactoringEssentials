@@ -76,12 +76,12 @@ namespace RefactoringEssentials.CSharp.Diagnostics
 			if (containingType == null)
 				return false;
 
-			foreach (var variable in node.Variables)
+			foreach (var variable in node.Declarators)
 			{
-				var name = variable.Name;
+				var name = variable.Symbol.Name;
 
-				var initializer = node.Initializer;
-				if (node.Initializer?.Value is IFieldReferenceOperation fieldReferenceOperation)
+				var initializer = variable.Initializer;
+				if (initializer?.Value is IFieldReferenceOperation fieldReferenceOperation)
 				{
 					if (fieldReferenceOperation.Field.Name == name && fieldReferenceOperation.Instance?.Syntax.IsKind(SyntaxKind.ThisExpression) == true)
 					{
@@ -100,16 +100,8 @@ namespace RefactoringEssentials.CSharp.Diagnostics
 				if (hidingMember == null)
 					continue;
 
-				//var mre = variable.Initializer?.Value as MemberAccessExpressionSyntax;
-				//if (mre != null && mre.Name.Identifier.ValueText == hidingMember.Name && mre.Expression.IsKind(SyntaxKind.ThisExpression))
-				//{
-				//	// Special case: the variable is initialized from the member it is hiding
-				//	// In this case, the hiding is obviously intentional and we shouldn't show a warning.
-				//	continue;
-				//}
-
 				string memberType = GetMemberType(hidingMember.Kind);
-				if (node.Syntax is VariableDeclaratorSyntax declaratorSyntax)
+				if (variable.Syntax is VariableDeclaratorSyntax declaratorSyntax)
 				{
 					diagnostic = Diagnostic.Create(descriptor, declaratorSyntax.Identifier.GetLocation(), name, memberType, hidingMember.Name);
 					return true;

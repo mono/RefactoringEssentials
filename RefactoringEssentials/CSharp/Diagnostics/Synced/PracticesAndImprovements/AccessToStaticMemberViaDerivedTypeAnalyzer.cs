@@ -51,9 +51,7 @@ namespace RefactoringEssentials.CSharp.Diagnostics
                 return false;
 
             var typeInfo = nodeContext.SemanticModel.GetTypeInfo(node.Expression);
-            if (memberResolveResult.Symbol == null || typeInfo.Type == null)
-                return false;
-            if (!memberResolveResult.Symbol.IsStatic)
+            if (typeInfo.Type == null)
                 return false;
 
             if (memberResolveResult.Symbol.ContainingType.Equals(typeInfo.Type))

@@ -118,7 +118,7 @@ namespace RefactoringEssentials.CSharp.Diagnostics
 			return false;
         }
 
-		static bool TryFindMember (string name, INamedTypeSymbol inSymbol, INamedTypeSymbol accessibleWithin, bool staticContext, out ISymbol hidingMember)
+		internal static bool TryFindMember (string name, INamedTypeSymbol inSymbol, INamedTypeSymbol accessibleWithin, bool staticContext, out ISymbol hidingMember)
 		{
 			hidingMember = null;
 

@@ -1,3 +1,4 @@
+using System.Linq;
 using RefactoringEssentials.CSharp.Diagnostics;
 using Xunit;
 
@@ -11,16 +12,18 @@ namespace RefactoringEssentials.Tests.CSharp.Diagnostics
             Analyze<ReplaceWithOfTypeWhereAnalyzer>(@"using System.Linq;
 class Test
 {
-    public void Foo(object[] obj)
+    public bool Foo(object[] obj)
     {
-        $obj.Select(q => q as Test).Where(q => q != null && Foo(q))$;
+        $obj.Select(q => q as Test).Where(q => q != null && Foo(new object[] { q }))$;
+        return true;
     }
 }", @"using System.Linq;
 class Test
 {
-    public void Foo(object[] obj)
+    public bool Foo(object[] obj)
     {
-        obj.OfType<Test>().Where(q => Foo(q));
+        obj.OfType<Test>().Where(q => Foo(new object[] { q }));
+        return true;
     }
 }");
         }

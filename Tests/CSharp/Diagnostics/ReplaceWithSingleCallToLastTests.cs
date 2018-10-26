@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RefactoringEssentials.CSharp.Diagnostics;
 using Xunit;
 
@@ -5,47 +6,70 @@ namespace RefactoringEssentials.Tests.CSharp.Diagnostics
 {
     public class ReplaceWithSingleCallToLastTests : CSharpDiagnosticTestBase
     {
-        [Fact]
-        public void TestSimpleCase()
+        static readonly List<object[]> replaceableMethods = new List<object[]>
         {
-            Analyze<ReplaceWithSingleCallToLastAnalyzer>(@"using System.Linq;
+            new object[] { "Any" } ,
+            new object[] { "Count" } ,
+            new object[] { "First" } ,
+            new object[] { "FirstOrDefault" } ,
+            new object[] { "Last" } ,
+            new object[] { "LastOrDefault" } ,
+            new object[] { "LongCount" } ,
+            new object[] { "Single" } ,
+            new object[] { "SingleOrDefault" } ,
+        };
+
+        public static IEnumerable<object[]> ReplaceableMethods => replaceableMethods;
+
+        [Theory]
+        [MemberData(nameof(ReplaceableMethods))]
+        public void TestSimpleCase(string method)
+        {
+            string input = @"using System.Linq;
 public class CSharpDemo {
     public void Bla () {
         int[] arr;
-        var bla = $arr.Where(x => x < 4).Last()$;
+        var bla = $arr.Where(x => x < 4)." + method + @"()$;
     }
-}", @"using System.Linq;
+}";
+
+            Analyze<ReplaceWithSingleCallToLastAnalyzer>(input, @"using System.Linq;
 public class CSharpDemo {
     public void Bla () {
         int[] arr;
-        var bla = arr.Last(x => x < 4);
+        var bla = arr." + method + @"(x => x < 4);
     }
 }");
         }
 
-        [Fact]
-        public void TestComplexCase()
+        [Theory]
+        [MemberData(nameof(ReplaceableMethods))]
+        public void TestComplexCase(string method)
         {
-            Analyze<ReplaceWithSingleCallToLastAnalyzer>(@"using System.Linq;
+            string input = @"using System.Linq;
 public class CSharpDemo {
     public void Bla () {
         int[] arr;
-        var bla = arr.Where(x => x < 4).Last(x => x < 4);
+        var bla = arr.Where(x => x < 4)." + method + @"(x => x < 4);
     }
-}");
+}";
+            Analyze<ReplaceWithSingleCallToLastAnalyzer>(input);
         }
 
-        [Fact]
-        public void TestDisable()
+        [Theory]
+        [MemberData(nameof(ReplaceableMethods))]
+        public void TestDisable(string method)
         {
-            Analyze<ReplaceWithSingleCallToLastAnalyzer>(@"using System.Linq;
+            string input = @"using System.Linq;
 public class CSharpDemo {
-	public void Bla () {
-		int[] arr;
+    public void Bla () {
+        int[] arr;
 #pragma warning disable " + CSharpDiagnosticIDs.ReplaceWithSingleCallToLastAnalyzerID + @"
-		var bla = arr.Where (x => x < 4).Last ();
-	}
-}");
+        var bla = arr.Where (x => x < 4)." + method + @" ();
+    }
+}";
+
+            Analyze<ReplaceWithSingleCallToLastAnalyzer>(input);
         }
     }
 }

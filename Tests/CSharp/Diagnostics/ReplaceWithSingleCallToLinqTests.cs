@@ -4,7 +4,7 @@ using Xunit;
 
 namespace RefactoringEssentials.Tests.CSharp.Diagnostics
 {
-    public class ReplaceWithSingleCallToLastTests : CSharpDiagnosticTestBase
+    public class ReplaceWithSingleCallToLinqTests : CSharpDiagnosticTestBase
     {
         static readonly List<object[]> replaceableMethods = new List<object[]>
         {
@@ -33,7 +33,7 @@ public class CSharpDemo {
     }
 }";
 
-            Analyze<ReplaceWithSingleCallToLastAnalyzer>(input, @"using System.Linq;
+            Analyze<ReplaceWithSingleCallToLinqAnalyzer>(input, @"using System.Linq;
 public class CSharpDemo {
     public void Bla () {
         int[] arr;
@@ -53,7 +53,7 @@ public class CSharpDemo {
         var bla = arr.Where(x => x < 4)." + method + @"(x => x < 4);
     }
 }";
-            Analyze<ReplaceWithSingleCallToLastAnalyzer>(input);
+            Analyze<ReplaceWithSingleCallToLinqAnalyzer>(input);
         }
 
         [Theory]
@@ -64,12 +64,12 @@ public class CSharpDemo {
 public class CSharpDemo {
     public void Bla () {
         int[] arr;
-#pragma warning disable " + CSharpDiagnosticIDs.ReplaceWithSingleCallToLastAnalyzerID + @"
+#pragma warning disable " + CSharpDiagnosticIDs.ReplaceWithSingleCallToLinqAnalyzerID + @"
         var bla = arr.Where (x => x < 4)." + method + @" ();
     }
 }";
 
-            Analyze<ReplaceWithSingleCallToLastAnalyzer>(input);
+            Analyze<ReplaceWithSingleCallToLinqAnalyzer>(input);
         }
     }
 }

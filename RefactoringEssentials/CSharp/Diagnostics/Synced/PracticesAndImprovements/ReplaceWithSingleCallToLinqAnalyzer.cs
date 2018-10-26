@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.Operations;
 namespace RefactoringEssentials.CSharp.Diagnostics
 {
 	[DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class ReplaceWithSingleCallToLastAnalyzer : DiagnosticAnalyzer
+    public class ReplaceWithSingleCallToLinqAnalyzer : DiagnosticAnalyzer
     {
 		static readonly string[] replaceableMethods =
 		{
@@ -23,13 +23,13 @@ namespace RefactoringEssentials.CSharp.Diagnostics
 		};
 
 		static readonly DiagnosticDescriptor descriptor = new DiagnosticDescriptor(
-            CSharpDiagnosticIDs.ReplaceWithSingleCallToLastAnalyzerID,
+            CSharpDiagnosticIDs.ReplaceWithSingleCallToLinqAnalyzerID,
             GettextCatalog.GetString("Redundant Where() call with predicate followed by {0}()"),
             GettextCatalog.GetString("Replace with single call to '{0}()'"),
             DiagnosticAnalyzerCategories.PracticesAndImprovements,
             DiagnosticSeverity.Info,
             isEnabledByDefault: true,
-            helpLinkUri: HelpLink.CreateFor(CSharpDiagnosticIDs.ReplaceWithSingleCallToLastAnalyzerID)
+            helpLinkUri: HelpLink.CreateFor(CSharpDiagnosticIDs.ReplaceWithSingleCallToLinqAnalyzerID)
         );
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(descriptor);

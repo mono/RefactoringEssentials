@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace RefactoringEssentials.CSharp.Diagnostics
 {
@@ -26,53 +27,46 @@ namespace RefactoringEssentials.CSharp.Diagnostics
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-            context.RegisterSyntaxNodeAction(
+            context.RegisterOperationAction(
                 (nodeContext) =>
                 {
                     Diagnostic diagnostic;
                     if (TryGetDiagnostic(nodeContext, out diagnostic))
                         nodeContext.ReportDiagnostic(diagnostic);
                 },
-                SyntaxKind.InvocationExpression
+                OperationKind.Invocation
             );
         }
 
-        static bool TryGetDiagnostic(SyntaxNodeAnalysisContext nodeContext, out Diagnostic diagnostic)
+        static bool TryGetDiagnostic(OperationAnalysisContext nodeContext, out Diagnostic diagnostic)
         {
             diagnostic = default(Diagnostic);
-            var anyInvoke = nodeContext.Node as InvocationExpressionSyntax;
-            var info = nodeContext.SemanticModel.GetSymbolInfo(anyInvoke);
+            var anyInvoke = (IInvocationOperation)nodeContext.Operation;
 
-            IMethodSymbol anyResolve = info.Symbol as IMethodSymbol;
-            if (anyResolve == null)
-            {
-                anyResolve = info.CandidateSymbols.OfType<IMethodSymbol>().FirstOrDefault(candidate => HasPredicateVersion(candidate));
-            }
-
-            if (anyResolve == null || !HasPredicateVersion(anyResolve))
+			var method = anyInvoke.TargetMethod;
+            if (!HasPredicateVersion(method))
                 return false;
 
-            ExpressionSyntax target;
-            InvocationExpressionSyntax whereInvoke;
-            if (!ReplaceWithSingleCallToAnyAnalyzer.MatchWhere(anyInvoke, out target, out whereInvoke))
-                return false;
-            info = nodeContext.SemanticModel.GetSymbolInfo(whereInvoke);
-            IMethodSymbol whereResolve = info.Symbol as IMethodSymbol;
-            if (whereResolve == null)
-            {
-                whereResolve = info.CandidateSymbols.OfType<IMethodSymbol>().FirstOrDefault(candidate => candidate.Name == "Where" && ReplaceWithSingleCallToAnyAnalyzer.IsQueryExtensionClass(candidate.ContainingType));
-            }
+			if (anyInvoke.Arguments.Length != 1)
+				return false;
 
-            if (whereResolve == null || whereResolve.Name != "Where" || !ReplaceWithSingleCallToAnyAnalyzer.IsQueryExtensionClass(whereResolve.ContainingType))
-                return false;
-            if (whereResolve.Parameters.Length != 1)
-                return false;
-            var predResolve = whereResolve.Parameters[0];
-            if (predResolve.Type.GetTypeParameters().Length != 2)
+			var possibleWhere = anyInvoke.Arguments[0];
+			if (!(possibleWhere.Value is IInvocationOperation whereInvocation))
+				return false;
+
+			var whereMethod = whereInvocation.TargetMethod;
+			if (whereMethod.Name != "Where" || !ReplaceWithSingleCallToAnyAnalyzer.IsQueryExtensionClass(whereMethod.ContainingType))
+				return false;
+
+			if (whereInvocation.Arguments.Length != 2)
+				return false;
+
+			var predicate = whereInvocation.Arguments[1].Parameter.Type;
+            if (predicate.GetTypeParameters ().Length != 2)
                 return false;
             diagnostic = Diagnostic.Create(
                 descriptor,
-                anyInvoke.GetLocation()
+                anyInvoke.Syntax.GetLocation()
             );
             return true;
         }

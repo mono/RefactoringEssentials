@@ -24,6 +24,18 @@ public class CSharpDemo {
         }
 
         [Fact]
+        public void TestComplexCase()
+        {
+            Analyze<ReplaceWithSingleCallToLastAnalyzer>(@"using System.Linq;
+public class CSharpDemo {
+    public void Bla () {
+        int[] arr;
+        var bla = arr.Where(x => x < 4).Last(x => x < 4);
+    }
+}");
+        }
+
+        [Fact]
         public void TestDisable()
         {
             Analyze<ReplaceWithSingleCallToLastAnalyzer>(@"using System.Linq;

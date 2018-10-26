@@ -26,18 +26,20 @@ namespace RefactoringEssentials.CSharp.Diagnostics
         }
 
 
-        internal static bool MatchSelect(InvocationExpressionSyntax anyInvoke, out ExpressionSyntax target, out TypeSyntax type, out ParameterSyntax lambdaParam, out ExpressionSyntax followUpExpression)
+        internal static bool MatchSelect(InvocationExpressionSyntax anyInvoke, out ExpressionSyntax target, out TypeSyntax type, out ParameterSyntax lambdaParam, out ExpressionSyntax followUpExpression, out string methodName)
         {
             target = null;
             type = null;
             lambdaParam = null;
             followUpExpression = null;
+			methodName = null;
 
             if (anyInvoke.ArgumentList.Arguments.Count != 1)
                 return false;
             var anyInvokeBase = anyInvoke.Expression as MemberAccessExpressionSyntax;
             if (anyInvokeBase == null)
                 return false;
+			methodName = anyInvokeBase.Name.Identifier.Text;
             var selectInvoc = anyInvokeBase.Expression as InvocationExpressionSyntax;
             if (selectInvoc == null || selectInvoc.ArgumentList.Arguments.Count != 1)
                 return false;
@@ -106,13 +108,13 @@ namespace RefactoringEssentials.CSharp.Diagnostics
             return false;
         }
 
-        internal static InvocationExpressionSyntax MakeOfTypeCall(InvocationExpressionSyntax anyInvoke)
+        internal static InvocationExpressionSyntax MakeOfTypeCall(InvocationExpressionSyntax anyInvoke, out string methodName)
         {
             var member = ((MemberAccessExpressionSyntax)anyInvoke.Expression).Name;
             ExpressionSyntax target, followUp;
             TypeSyntax type;
             ParameterSyntax param;
-            if (MatchSelect(anyInvoke, out target, out type, out param, out followUp))
+            if (MatchSelect(anyInvoke, out target, out type, out param, out followUp, out methodName))
             {
                 var ofTypeIdentifier = ((SimpleNameSyntax)SyntaxFactory.ParseName("OfType")).Identifier;
                 var typeParams = SyntaxFactory.SeparatedList(new[] { type });
@@ -138,8 +140,8 @@ namespace RefactoringEssentials.CSharp.Diagnostics
             var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var diagnostic = diagnostics.First();
             var node = root.FindNode(context.Span, getInnermostNodeForTie: true) as InvocationExpressionSyntax;
-            var newRoot = root.ReplaceNode(node, MakeOfTypeCall(node));
-            context.RegisterCodeFix(CodeActionFactory.Create(node.Span, diagnostic.Severity, "Replace with call to OfType<T>().Where()", document.WithSyntaxRoot(newRoot)), diagnostic);
+            var newRoot = root.ReplaceNode(node, MakeOfTypeCall(node, out string methodName));
+            context.RegisterCodeFix(CodeActionFactory.Create(node.Span, diagnostic.Severity, string.Format ("Replace with call to OfType<T>().{0}()", methodName), document.WithSyntaxRoot(newRoot)), diagnostic);
 		}
 
 		static bool CompareNames(ParameterSyntax param, IdentifierNameSyntax expr)

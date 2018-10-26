@@ -37,6 +37,37 @@ class C
         }
 
         [Fact]
+        public void MemberInvocationQualified()
+        {
+            Analyze<AccessToStaticMemberViaDerivedTypeAnalyzer>(@"
+class A
+{
+    public static void F() { }
+}
+class B : A { }
+class C
+{
+    void Main()
+    {
+        $global::B$.F ();
+    }
+}", @"
+class A
+{
+    public static void F() { }
+}
+class B : A { }
+class C
+{
+    void Main()
+    {
+        A.F ();
+    }
+}"
+            );
+        }
+
+        [Fact]
         public void MemberInvocationWithComment()
         {
             Analyze<AccessToStaticMemberViaDerivedTypeAnalyzer>(@"

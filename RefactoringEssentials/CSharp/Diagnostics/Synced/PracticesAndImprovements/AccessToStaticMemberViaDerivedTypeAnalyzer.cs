@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace RefactoringEssentials.CSharp.Diagnostics
 {
@@ -25,58 +26,60 @@ namespace RefactoringEssentials.CSharp.Diagnostics
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-            context.RegisterSyntaxNodeAction(
-                (nodeContext) =>
-                {
-                    Diagnostic diagnostic;
-                    if (TryGetDiagnostic(nodeContext, out diagnostic))
-                        nodeContext.ReportDiagnostic(diagnostic);
-                },
-                SyntaxKind.SimpleMemberAccessExpression
-            );
-        }
+			context.RegisterOperationAction(ctx =>
+			{
+				var invocation = (IInvocationOperation)ctx.Operation;
+				var method = invocation.TargetMethod;
+				if (!method.IsStatic ||
+					!(invocation.Syntax is InvocationExpressionSyntax invocationSyntax) ||
+					!(invocationSyntax.Expression is MemberAccessExpressionSyntax memberAccessSyntax))
+					return;
 
-        static bool TryGetDiagnostic(SyntaxNodeAnalysisContext nodeContext, out Diagnostic diagnostic)
+				if (TryGetDiagnostic (memberAccessSyntax, method.ContainingType, out var diagnostic))
+					ctx.ReportDiagnostic(Diagnostic.Create(descriptor, memberAccessSyntax.Expression.GetLocation()));
+			}, OperationKind.Invocation);
+
+			context.RegisterOperationAction(ctx =>
+			{
+				var memberReference = (IMemberReferenceOperation)ctx.Operation;
+				var member = memberReference.Member;
+				if (!member.IsStatic || !(memberReference.Syntax is MemberAccessExpressionSyntax memberAccessSyntax))
+					return;
+
+				if (TryGetDiagnostic(memberAccessSyntax, member.ContainingType, out var diagnostic))
+					ctx.ReportDiagnostic(Diagnostic.Create(descriptor, memberAccessSyntax.Expression.GetLocation()));
+			}, OperationKind.PropertyReference, OperationKind.FieldReference, OperationKind.MethodReference, OperationKind.EventReference);
+		}
+
+		static bool TryGetDiagnostic(MemberAccessExpressionSyntax memberAccessSyntax, ITypeSymbol containingType, out Diagnostic diagnostic)
+		{
+			diagnostic = default(Diagnostic);
+
+			if (memberAccessSyntax.IsKind(SyntaxKind.ThisKeyword) || memberAccessSyntax.IsKind(SyntaxKind.BaseExpression))
+				return false;
+
+			var rightMostName = memberAccessSyntax.Expression.GetRightmostName();
+			var rightMostType = rightMostName?.Identifier.Text;
+			if (rightMostType == null || rightMostType == containingType.Name)
+				return false;
+
+			if (CheckCuriouslyRecurringTemplatePattern(containingType, rightMostType))
+				return false;
+
+			diagnostic = Diagnostic.Create(
+				descriptor,
+				memberAccessSyntax.GetLocation()
+			);
+			return true;
+		}
+
+		static bool CheckCuriouslyRecurringTemplatePattern(ITypeSymbol containingType, string type)
         {
-            diagnostic = default(Diagnostic);
-            var node = nodeContext.Node as MemberAccessExpressionSyntax;
-
-            if (node.Expression.IsKind(SyntaxKind.ThisExpression) || node.Expression.IsKind(SyntaxKind.BaseExpression))
-                // Call within current class scope using 'this' or 'base'
-                return false;
-            var memberResolveResult = nodeContext.SemanticModel.GetSymbolInfo(node);
-            if (memberResolveResult.Symbol == null)
-                return false;
-            if (!memberResolveResult.Symbol.IsStatic)
-                return false;
-
-            var typeInfo = nodeContext.SemanticModel.GetTypeInfo(node.Expression);
-            if (typeInfo.Type == null)
-                return false;
-
-            if (memberResolveResult.Symbol.ContainingType.Equals(typeInfo.Type))
-                return false;
-
-            // check whether member.DeclaringType contains the original type
-            // (curiously recurring template pattern)
-            if (CheckCuriouslyRecurringTemplatePattern(memberResolveResult.Symbol.ContainingType, typeInfo.Type))
-                return false;
-
-            diagnostic = Diagnostic.Create(
-                descriptor,
-                node.Expression.GetLocation()
-            );
-            return true;
-        }
-
-        static bool CheckCuriouslyRecurringTemplatePattern(ITypeSymbol containingType, ITypeSymbol type)
-        {
-            if (containingType.Equals(type))
+            if (containingType.Name == type)
                 return true;
-            var nt = containingType as INamedTypeSymbol;
-            if (nt == null)
-                return false;
-            foreach (var typeArg in nt.TypeArguments)
+			if (!(containingType is INamedTypeSymbol nt))
+				return false;
+			foreach (var typeArg in nt.TypeArguments)
             {
                 if (CheckCuriouslyRecurringTemplatePattern(typeArg, type))
                     return true;

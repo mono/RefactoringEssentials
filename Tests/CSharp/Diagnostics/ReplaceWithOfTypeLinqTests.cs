@@ -5,7 +5,7 @@ using Xunit;
 
 namespace RefactoringEssentials.Tests.CSharp.Diagnostics
 {
-    public class ReplaceWithOfTypeWhereTests : CSharpDiagnosticTestBase
+    public class ReplaceWithOfTypeLinqTests : CSharpDiagnosticTestBase
     {
         static readonly List<object[]> replaceableMethods = new List<object[]>
         {
@@ -27,7 +27,7 @@ namespace RefactoringEssentials.Tests.CSharp.Diagnostics
         [MemberData(nameof(ReplaceableMethods))]
         public void TestCaseBasicWithFollowUpExpresison(string method)
         {
-            Analyze<ReplaceWithOfTypeWhereAnalyzer>(@"using System.Linq;
+            Analyze<ReplaceWithOfTypeLinqAnalyzer>(@"using System.Linq;
 class Test
 {
     public bool Foo(object[] obj)
@@ -50,12 +50,12 @@ class Test
         [MemberData(nameof(ReplaceableMethods))]
         public void TestDisable(string method)
         {
-            Analyze<ReplaceWithOfTypeWhereAnalyzer>(@"using System.Linq;
+            Analyze<ReplaceWithOfTypeLinqAnalyzer>(@"using System.Linq;
 class Test
 {
 	public void Foo(object[] obj)
 	{
-#pragma warning disable " + CSharpDiagnosticIDs.ReplaceWithOfTypeWhereAnalyzerID + @"
+#pragma warning disable " + CSharpDiagnosticIDs.ReplaceWithOfTypeLinqAnalyzerID + @"
 		obj.Select (q => q as Test)." + method + @" (q => q != null);
 	}
 }");
@@ -65,7 +65,7 @@ class Test
         [MemberData(nameof(ReplaceableMethods))]
         public void TestJunk(string method)
         {
-            Analyze<ReplaceWithOfTypeWhereAnalyzer>(@"using System.Linq;
+            Analyze<ReplaceWithOfTypeLinqAnalyzer>(@"using System.Linq;
 class Test
 {
 	public void Foo(object[] obj)
@@ -73,7 +73,7 @@ class Test
 		obj.Select (x => q as Test)." + method + @" (q => q != null && true);
 	}
 }");
-            Analyze<ReplaceWithOfTypeWhereAnalyzer>(@"using System.Linq;
+            Analyze<ReplaceWithOfTypeLinqAnalyzer>(@"using System.Linq;
 class Test
 {
 	public void Foo(object[] obj)

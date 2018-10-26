@@ -318,7 +318,7 @@
     <Compile Include="CSharp\Diagnostics\ReplaceWithFirstOrDefaultTests.cs" />
     <Compile Include="CSharp\Diagnostics\ReplaceWithLastOrDefaultTests.cs" />
     <Compile Include="CSharp\Diagnostics\ReplaceWithOfTypeTests.cs" />
-    <Compile Include="CSharp\Diagnostics\ReplaceWithOfTypeWhereTests.cs" />
+    <Compile Include="CSharp\Diagnostics\ReplaceWithOfTypeLinqTests.cs" />
     <Compile Include="CSharp\Diagnostics\ReplaceWithSimpleAssignmentTests.cs" />
     <Compile Include="CSharp\Diagnostics\ReplaceWithSingleCallToLinqTests.cs" />
     <Compile Include="CSharp\Diagnostics\ReplaceWithStringIsNullOrEmptyTests.cs" />

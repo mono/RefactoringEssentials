@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Operations;
 namespace RefactoringEssentials.CSharp.Diagnostics
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class ReplaceWithOfTypeWhereAnalyzer : DiagnosticAnalyzer
+    public class ReplaceWithOfTypeLinqAnalyzer : DiagnosticAnalyzer
     {
 		static readonly string[] replaceableMethods =
 		{
@@ -27,13 +27,13 @@ namespace RefactoringEssentials.CSharp.Diagnostics
 		};
 
         static readonly DiagnosticDescriptor descriptor = new DiagnosticDescriptor(
-            CSharpDiagnosticIDs.ReplaceWithOfTypeWhereAnalyzerID,
+            CSharpDiagnosticIDs.ReplaceWithOfTypeLinqAnalyzerID,
             GettextCatalog.GetString("Replace with call to OfType<T>().{0}()"),
             GettextCatalog.GetString("Replace with 'OfType<T>().{0}()'"),
             DiagnosticAnalyzerCategories.PracticesAndImprovements,
             DiagnosticSeverity.Info,
             isEnabledByDefault: true,
-            helpLinkUri: HelpLink.CreateFor(CSharpDiagnosticIDs.ReplaceWithOfTypeWhereAnalyzerID)
+            helpLinkUri: HelpLink.CreateFor(CSharpDiagnosticIDs.ReplaceWithOfTypeLinqAnalyzerID)
         );
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(descriptor);

@@ -10,13 +10,13 @@ using Microsoft.CodeAnalysis.Formatting;
 namespace RefactoringEssentials.CSharp.Diagnostics
 {
     [ExportCodeFixProvider(LanguageNames.CSharp), System.Composition.Shared]
-    public class ReplaceWithOfTypeWhereCodeFixProvider : CodeFixProvider
+    public class ReplaceWithOfTypeLinqCodeFixProvider : CodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
             get
             {
-                return ImmutableArray.Create(CSharpDiagnosticIDs.ReplaceWithOfTypeWhereAnalyzerID);
+                return ImmutableArray.Create(CSharpDiagnosticIDs.ReplaceWithOfTypeLinqAnalyzerID);
             }
         }
 
@@ -127,28 +127,6 @@ namespace RefactoringEssentials.CSharp.Diagnostics
             }
 
             return null;
-        }
-
-        internal static bool IsQueryExtensionClass(INamedTypeSymbol typeDef)
-        {
-            if (typeDef == null || typeDef.ContainingNamespace == null || typeDef.ContainingNamespace.GetFullName() != "System.Linq")
-                return false;
-            switch (typeDef.Name)
-            {
-                case "Enumerable":
-                case "ParallelEnumerable":
-                case "Queryable":
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
-        static bool HasPredicateVersion(IMethodSymbol member)
-        {
-            if (!IsQueryExtensionClass(member.ContainingType))
-                return false;
-            return member.Name == "Any";
         }
 
         public async override Task RegisterCodeFixesAsync(CodeFixContext context)

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using RefactoringEssentials.CSharp.Diagnostics;
 using Xunit;
@@ -6,15 +7,32 @@ namespace RefactoringEssentials.Tests.CSharp.Diagnostics
 {
     public class ReplaceWithOfTypeWhereTests : CSharpDiagnosticTestBase
     {
-        [Fact]
-        public void TestCaseBasicWithFollowUpExpresison()
+        static readonly List<object[]> replaceableMethods = new List<object[]>
+        {
+            new object[] { "Any" } ,
+            new object[] { "Count" } ,
+            new object[] { "First" } ,
+            new object[] { "FirstOrDefault" } ,
+            new object[] { "Last" } ,
+            new object[] { "LastOrDefault" } ,
+            new object[] { "LongCount" } ,
+            new object[] { "Single" } ,
+            new object[] { "SingleOrDefault" } ,
+            new object[] { "Where" } ,
+        };
+
+        public static IEnumerable<object[]> ReplaceableMethods => replaceableMethods;
+
+        [Theory]
+        [MemberData(nameof(ReplaceableMethods))]
+        public void TestCaseBasicWithFollowUpExpresison(string method)
         {
             Analyze<ReplaceWithOfTypeWhereAnalyzer>(@"using System.Linq;
 class Test
 {
     public bool Foo(object[] obj)
     {
-        $obj.Select(q => q as Test).Where(q => q != null && Foo(new object[] { q }))$;
+        $obj.Select(q => q as Test)." + method + @"(q => q != null && Foo(new object[] { q }))$;
         return true;
     }
 }", @"using System.Linq;
@@ -22,35 +40,37 @@ class Test
 {
     public bool Foo(object[] obj)
     {
-        obj.OfType<Test>().Where(q => Foo(new object[] { q }));
+        obj.OfType<Test>()." + method + @"(q => Foo(new object[] { q }));
         return true;
     }
 }");
         }
 
-        [Fact]
-        public void TestDisable()
+        [Theory]
+        [MemberData(nameof(ReplaceableMethods))]
+        public void TestDisable(string method)
         {
             Analyze<ReplaceWithOfTypeWhereAnalyzer>(@"using System.Linq;
 class Test
 {
 	public void Foo(object[] obj)
 	{
-		// ReSharper disable once ReplaceWithOfType.Where
-		obj.Select (q => q as Test).Where (q => q != null);
+#pragma warning disable " + CSharpDiagnosticIDs.ReplaceWithOfTypeWhereAnalyzerID + @"
+		obj.Select (q => q as Test)." + method + @" (q => q != null);
 	}
 }");
         }
 
-        [Fact]
-        public void TestJunk()
+        [Theory]
+        [MemberData(nameof(ReplaceableMethods))]
+        public void TestJunk(string method)
         {
             Analyze<ReplaceWithOfTypeWhereAnalyzer>(@"using System.Linq;
 class Test
 {
 	public void Foo(object[] obj)
 	{
-		obj.Select (x => q as Test).Where (q => q != null && true);
+		obj.Select (x => q as Test)." + method + @" (q => q != null && true);
 	}
 }");
             Analyze<ReplaceWithOfTypeWhereAnalyzer>(@"using System.Linq;
@@ -58,7 +78,7 @@ class Test
 {
 	public void Foo(object[] obj)
 	{
-		obj.Select (q => q as Test).Where (q => 1 != null && true);
+		obj.Select (q => q as Test)." + method + @" (q => 1 != null && true);
 	}
 }");
 

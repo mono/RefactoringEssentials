@@ -317,15 +317,6 @@
     <Compile Include="CSharp\Diagnostics\RemoveRedundantOrStatementTests.cs" />
     <Compile Include="CSharp\Diagnostics\ReplaceWithFirstOrDefaultTests.cs" />
     <Compile Include="CSharp\Diagnostics\ReplaceWithLastOrDefaultTests.cs" />
-    <Compile Include="CSharp\Diagnostics\ReplaceWithOfTypeAnyTests.cs" />
-    <Compile Include="CSharp\Diagnostics\ReplaceWithOfTypeCountTests.cs" />
-    <Compile Include="CSharp\Diagnostics\ReplaceWithOfTypeFirstOrDefaultTests.cs" />
-    <Compile Include="CSharp\Diagnostics\ReplaceWithOfTypeFirstTests.cs" />
-    <Compile Include="CSharp\Diagnostics\ReplaceWithOfTypeLastOrDefaultTests.cs" />
-    <Compile Include="CSharp\Diagnostics\ReplaceWithOfTypeLastTests.cs" />
-    <Compile Include="CSharp\Diagnostics\ReplaceWithOfTypeLongCountTests.cs" />
-    <Compile Include="CSharp\Diagnostics\ReplaceWithOfTypeSingleOrDefaultTests.cs" />
-    <Compile Include="CSharp\Diagnostics\ReplaceWithOfTypeSingleTests.cs" />
     <Compile Include="CSharp\Diagnostics\ReplaceWithOfTypeTests.cs" />
     <Compile Include="CSharp\Diagnostics\ReplaceWithOfTypeWhereTests.cs" />
     <Compile Include="CSharp\Diagnostics\ReplaceWithSimpleAssignmentTests.cs" />

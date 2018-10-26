@@ -43,44 +43,30 @@ namespace RefactoringEssentials.CSharp.Diagnostics
 					if (!IsLinqExtension(selectMethod) || selectMethod.Name != "Select")
 						return;
 
-					if (selectInvoke.Arguments.Length != 2 || !(selectInvoke.Arguments[0].Value is IInvocationOperation whereInvoke))
+					if (!(selectInvoke.Arguments[0].Value is IInvocationOperation whereInvoke))
+						return;
+
+					if (selectInvoke.Arguments.Length != 2 || whereInvoke.Arguments.Length != 2)
 						return;
 
 					var whereMethod = whereInvoke.TargetMethod;
 					if (!IsLinqExtension(whereMethod) || whereMethod.Name != "Where")
 						return;
 
-					if (!(selectInvoke.Arguments[1].Value is IDelegateCreationOperation selectDelegateCreation))
+					if (!ReplaceWithOfTypeLinqAnalyzer.TryGetLambdaFromArgument(selectInvoke, out var selectLambda) ||
+						!ReplaceWithOfTypeLinqAnalyzer.TryGetLambdaFromArgument(whereInvoke, out var whereLambda))
 						return;
 
-					if (!(selectDelegateCreation.Target is IAnonymousFunctionOperation selectLambda))
+					// Check that this is a simple cast
+					if (!ReplaceWithOfTypeLinqAnalyzer.TryGetSingleReturnValue<IConversionOperation>(selectLambda, out var selectConversion) ||
+						!(selectConversion.Operand is IParameterReferenceOperation selectParameter) ||
+						selectParameter.Parameter != selectLambda.Symbol.Parameters[0])
 						return;
 
-					var selectBlock = selectLambda.Body.Operations;
-					if (selectBlock.Length != 1)
-						return;
-
-					if (!(selectBlock[0] is IReturnOperation selectRet) || !(selectRet.ReturnedValue is IConversionOperation selectConversion))
-						return;
-
-					if (!(selectConversion.Operand is IParameterReferenceOperation selectParameterReference) || selectParameterReference.Parameter != selectLambda.Symbol.Parameters[0])
-						return;
-
-					if (whereInvoke.Arguments.Length != 2 || !(whereInvoke.Arguments[1].Value is IDelegateCreationOperation whereDelegateCreation))
-						return;
-
-					if (!(whereDelegateCreation.Target is IAnonymousFunctionOperation whereLambda))
-						return;
-
-					// Check the select does as cast
-					var whereBlock = whereLambda.Body.Operations;
-					if (whereBlock.Length != 1)
-						return;
-
-					if (!(whereBlock[0] is IReturnOperation whereRet) || !(whereRet.ReturnedValue is IIsTypeOperation whereIsType))
-						return;
-
-					if (!(whereIsType.ValueOperand is IParameterReferenceOperation whereParameterReference) || whereParameterReference.Parameter != whereLambda.Symbol.Parameters[0])
+					// Check that this is an is check
+					if (!ReplaceWithOfTypeLinqAnalyzer.TryGetSingleReturnValue<IIsTypeOperation>(whereLambda, out var whereIsType) ||
+						!(whereIsType.ValueOperand is IParameterReferenceOperation whereParameter) ||
+						whereParameter.Parameter != whereLambda.Symbol.Parameters[0])
 						return;
 
 					if (selectConversion.Type != whereIsType.TypeOperand)

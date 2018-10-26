@@ -59,46 +59,30 @@ namespace RefactoringEssentials.CSharp.Diagnostics
 					if (!IsLinqExtension(method) || !IsPredicateMethod(method))
 						return;
 
-					if (anyInvoke.Arguments.Length != 2 || !(anyInvoke.Arguments[0].Value is IInvocationOperation selectInvoke))
+					if (!(anyInvoke.Arguments[0].Value is IInvocationOperation selectInvoke))
+						return;
+
+					if (anyInvoke.Arguments.Length != 2 || selectInvoke.Arguments.Length != 2)
 						return;
 
 					var selectMethod = selectInvoke.TargetMethod;
 					if (!IsLinqExtension(selectMethod) || selectMethod.Name != "Select")
 						return;
 
-					if (!(anyInvoke.Arguments[1].Value is IDelegateCreationOperation anyDelegateCreation))
-						return;
-
-					if (!(anyDelegateCreation.Target is IAnonymousFunctionOperation anyLambda))
-						return;
-
-					var anyBlock = anyLambda.Body.Operations;
-					if (anyBlock.Length != 1)
-						return;
-
-					if (!(anyBlock[0] is IReturnOperation anyRet) || !(anyRet.ReturnedValue is IBinaryOperation anyCheck))
-						return;
-
-					if (!IsAnyAParameterNullCheck(anyCheck, anyLambda.Symbol.Parameters[0]))
+					if (!TryGetLambdaFromArgument(anyInvoke, out var anyLambda) ||
+						!TryGetLambdaFromArgument(selectInvoke, out var selectLambda))
 						return;
 
 					// check that anyInvoke does a nullcheck
-
-					if (selectInvoke.Arguments.Length != 2 || !(selectInvoke.Arguments[1].Value is IDelegateCreationOperation selectDelegateCreation))
-						return;
-
-					if (!(selectDelegateCreation.Target is IAnonymousFunctionOperation selectLambda))
+					if (!TryGetSingleReturnValue<IBinaryOperation>(anyLambda, out var anyCheck) ||
+						!IsAnyAParameterNullCheck(anyCheck, anyLambda.Symbol.Parameters[0]))
 						return;
 
 					// Check the select does as cast
-					var selectBlock = selectLambda.Body.Operations;
-					if (selectBlock.Length != 1)
-						return;
-
-					if (!(selectBlock[0] is IReturnOperation selectRet) || !(selectRet.ReturnedValue is IConversionOperation selectConversion) || !selectConversion.IsTryCast)
-						return;
-
-					if (!(selectConversion.Operand is IParameterReferenceOperation parameterReference) || parameterReference.Parameter != selectLambda.Symbol.Parameters[0])
+					if (!TryGetSingleReturnValue<IConversionOperation>(selectLambda, out var selectConversion) ||
+						!selectConversion.IsTryCast ||
+						!(selectConversion.Operand is IParameterReferenceOperation parameterReference) ||
+						parameterReference.Parameter != selectLambda.Symbol.Parameters[0])
 						return;
 
 					nodeContext.ReportDiagnostic(
@@ -143,6 +127,31 @@ namespace RefactoringEssentials.CSharp.Diagnostics
 					return Array.IndexOf(replaceableMethods, member.Name) >= 0;
 				}
 			});
-        }
+		}
+
+		internal static bool TryGetSingleReturnValue<T>(IAnonymousFunctionOperation lambda, out T returnedValue) where T : IOperation
+		{
+			returnedValue = default(T);
+			var anyBlock = lambda.Body.Operations;
+			if (anyBlock.Length != 1 ||
+				!(anyBlock[0] is IReturnOperation ret) ||
+				!(ret.ReturnedValue is T temp))
+				return false;
+
+			returnedValue = temp;
+			return true;
+		}
+
+		internal static bool TryGetLambdaFromArgument (IInvocationOperation invoke, out IAnonymousFunctionOperation lambdaResult)
+		{
+			lambdaResult = default(IAnonymousFunctionOperation);
+
+			if (!(invoke.Arguments[1].Value is IDelegateCreationOperation delegateCreation) ||
+				!(delegateCreation.Target is IAnonymousFunctionOperation lambda))
+				return false;
+
+			lambdaResult = lambda;
+			return true;
+		}
 	}
 }

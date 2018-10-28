@@ -48,7 +48,6 @@ namespace RefactoringEssentials.CSharp.Diagnostics
 			var containingType = memberSymbol.GetContainingTypeOrThis();
 			var staticContext = memberSymbol.IsStatic;
 
-            var symbols = nodeContext.SemanticModel.LookupSymbols(node.SpanStart, memberSymbol.GetContainingTypeOrThis ());
             foreach (var param in node.Parameters)
             {
 				var name = param.Identifier.ValueText;

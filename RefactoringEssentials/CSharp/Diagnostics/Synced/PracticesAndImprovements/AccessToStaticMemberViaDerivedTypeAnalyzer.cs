@@ -41,7 +41,9 @@ namespace RefactoringEssentials.CSharp.Diagnostics
 					var argument = invocation.Arguments[0].Value;
 					if (argument is IConversionOperation conversion)
 						argument = conversion.Operand;
-					extensionParameter = argument.Syntax;
+
+					if (argument.Syntax is ExpressionSyntax syntax)
+						extensionParameter = syntax.GetRightmostName ();
 				}
 
 				if (TryGetDiagnostic (memberAccessSyntax, method.ContainingType, extensionParameter, out var diagnostic))

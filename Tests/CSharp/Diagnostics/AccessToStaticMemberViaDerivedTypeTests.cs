@@ -43,12 +43,19 @@ class C
 using System.Collections.Generic;
 using System.Linq;
 
+class Container
+{
+    public List<int> MyList;
+}
+
 class A
 {
     public static void F()
     {
         var list = new List<int>();
         var result = list.Any(x => x == 0);
+
+        var result2 = new Container ().MyList.Any (x => x == 0);
     }
 }"
             );

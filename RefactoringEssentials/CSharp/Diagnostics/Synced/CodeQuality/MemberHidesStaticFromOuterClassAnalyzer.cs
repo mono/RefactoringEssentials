@@ -78,8 +78,12 @@ namespace RefactoringEssentials.CSharp.Diagnostics
 			var members = parentSymbol.GetMembers(name);
 			if (!members.IsDefaultOrEmpty)
 			{
-				parentMemberKind = GetMemberKind (members[0]);
-				return true;
+				var hiddenMember = members.FirstOrDefault(x => x.IsStatic);
+				if (hiddenMember != null)
+				{
+					parentMemberKind = GetMemberKind(hiddenMember);
+					return true;
+				}
 			}
 
 			return ReportHiddenMembers(name, parentSymbol.ContainingType, out parentMemberKind);

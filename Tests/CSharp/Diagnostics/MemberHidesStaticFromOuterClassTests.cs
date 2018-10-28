@@ -13,6 +13,7 @@ public class Foo
 {
 	public class Bar
 	{
+        public string ShouldNotMatch;
         public void $Method$() {}
 		public string $Test$ { get; set; }
         public string $Field$;
@@ -31,6 +32,7 @@ public class Foo
         add {}
         remove {}
     }
+    public string ShouldNotMatch;
 }
 ");
         }

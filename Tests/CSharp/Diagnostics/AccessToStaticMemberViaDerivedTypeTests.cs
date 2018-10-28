@@ -37,6 +37,24 @@ class C
         }
 
         [Fact]
+        public void ReducedExtensionsAreNotReported()
+        {
+            Analyze<AccessToStaticMemberViaDerivedTypeAnalyzer>(@"
+using System.Collections.Generic;
+using System.Linq;
+
+class A
+{
+    public static void F()
+    {
+        var list = new List<int>();
+        var result = list.Any(x => x == 0);
+    }
+}"
+            );
+        }
+
+        [Fact]
         public void MemberInvocationQualified()
         {
             Analyze<AccessToStaticMemberViaDerivedTypeAnalyzer>(@"

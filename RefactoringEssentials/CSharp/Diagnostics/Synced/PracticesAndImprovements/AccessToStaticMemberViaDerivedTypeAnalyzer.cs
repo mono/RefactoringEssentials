@@ -35,7 +35,16 @@ namespace RefactoringEssentials.CSharp.Diagnostics
 					!(invocationSyntax.Expression is MemberAccessExpressionSyntax memberAccessSyntax))
 					return;
 
-				if (TryGetDiagnostic (memberAccessSyntax, method.ContainingType, out var diagnostic))
+				SyntaxNode extensionParameter = null;
+				if (method.IsExtensionMethod)
+				{
+					var argument = invocation.Arguments[0].Value;
+					if (argument is IConversionOperation conversion)
+						argument = conversion.Operand;
+					extensionParameter = argument.Syntax;
+				}
+
+				if (TryGetDiagnostic (memberAccessSyntax, method.ContainingType, extensionParameter, out var diagnostic))
 					ctx.ReportDiagnostic(Diagnostic.Create(descriptor, memberAccessSyntax.Expression.GetLocation()));
 			}, OperationKind.Invocation);
 
@@ -46,12 +55,12 @@ namespace RefactoringEssentials.CSharp.Diagnostics
 				if (!member.IsStatic || !(memberReference.Syntax is MemberAccessExpressionSyntax memberAccessSyntax))
 					return;
 
-				if (TryGetDiagnostic(memberAccessSyntax, member.ContainingType, out var diagnostic))
+				if (TryGetDiagnostic(memberAccessSyntax, member.ContainingType, null, out var diagnostic))
 					ctx.ReportDiagnostic(Diagnostic.Create(descriptor, memberAccessSyntax.Expression.GetLocation()));
 			}, OperationKind.PropertyReference, OperationKind.FieldReference, OperationKind.MethodReference, OperationKind.EventReference);
 		}
 
-		static bool TryGetDiagnostic(MemberAccessExpressionSyntax memberAccessSyntax, ITypeSymbol containingType, out Diagnostic diagnostic)
+		static bool TryGetDiagnostic(MemberAccessExpressionSyntax memberAccessSyntax, ITypeSymbol containingType, SyntaxNode extensionParameter, out Diagnostic diagnostic)
 		{
 			diagnostic = default(Diagnostic);
 
@@ -59,8 +68,11 @@ namespace RefactoringEssentials.CSharp.Diagnostics
 				return false;
 
 			var rightMostName = memberAccessSyntax.Expression.GetRightmostName();
-			var rightMostType = rightMostName?.Identifier.Text;
-			if (rightMostType == null || rightMostType == containingType.Name)
+			if (rightMostName == null || rightMostName == extensionParameter)
+				return false;
+
+			var rightMostType = rightMostName.Identifier.Text;
+			if (rightMostType == containingType.Name)
 				return false;
 
 			if (CheckCuriouslyRecurringTemplatePattern(containingType, rightMostType))

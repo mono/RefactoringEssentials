@@ -41,11 +41,15 @@ namespace RefactoringEssentials.CSharp.CodeRefactorings
             if (elementType.Type == null || elementType.Type.SpecialType != SpecialType.System_String)
                 return;
 
+            var argument = elementAccess.ArgumentList.Arguments.FirstOrDefault();
+            if (argument == null)
+                return;
+
             context.RegisterRefactoring(
                 CodeActionFactory.Create(
                     span,
                     DiagnosticSeverity.Info,
-                    string.Format(GettextCatalog.GetString("Check 'if ({0}.Length > {1})'"), elementAccess.Expression, elementAccess.ArgumentList.Arguments.First()),
+                    string.Format(GettextCatalog.GetString("Check 'if ({0}.Length > {1})'"), elementAccess.Expression, argument),
                     t2 =>
                     {
                         var parentStatement = elementAccess.Parent.AncestorsAndSelf().OfType<StatementSyntax>().FirstOrDefault();
@@ -54,7 +58,7 @@ namespace RefactoringEssentials.CSharp.CodeRefactorings
                             SyntaxFactory.BinaryExpression(
                                 SyntaxKind.GreaterThanExpression,
                                 SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, elementAccess.Expression, SyntaxFactory.IdentifierName("Length")),
-                                elementAccess.ArgumentList.Arguments.First().Expression
+								argument.Expression
                             ),
                             parentStatement
                         );
@@ -64,5 +68,10 @@ namespace RefactoringEssentials.CSharp.CodeRefactorings
                 )
             );
         }
-    }
+
+        static bool IsTypeSupported(ITypeSymbol type)
+            => type != null &&
+            (type.SpecialType == SpecialType.System_String || 
+            (type.Name == "StringBuilder" && type.ContainingNamespace?.Name == "Text" && type.ContainingNamespace.ContainingNamespace?.Name == "System"));
+	}
 }

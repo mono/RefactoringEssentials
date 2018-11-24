@@ -113,7 +113,6 @@
     <Compile Include="CSharp\CodeRefactorings\CheckArrayIndexValueTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\CheckCollectionIndexValueTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\CheckDictionaryKeyValueTests.cs" />
-    <Compile Include="CSharp\CodeRefactorings\CheckStringBuilderIndexValueTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\CheckStringIndexValueTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ComputeConstantValueTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\ContractEnsuresNotNullReturnTests.cs" />

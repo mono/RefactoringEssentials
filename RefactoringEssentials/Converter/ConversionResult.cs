@@ -30,7 +30,8 @@ namespace RefactoringEssentials.Converter
             var builder = new StringBuilder();
             for (int i = 0; i < Exceptions.Count; i++)
             {
-                builder.AppendFormat("----- Exception {0} of {1} -----" + Environment.NewLine, i + 1, Exceptions.Count);
+                builder.AppendFormat("----- Exception {0} of {1} -----", i + 1, Exceptions.Count);
+                builder.AppendLine();
                 builder.AppendLine(Exceptions[i].ToString());
             }
             return builder.ToString();

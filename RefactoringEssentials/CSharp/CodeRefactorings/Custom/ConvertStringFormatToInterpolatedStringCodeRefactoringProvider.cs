@@ -147,7 +147,7 @@ namespace RefactoringEssentials.CSharp.CodeRefactorings
                                 // print all uncommon white spaces as numbers
                                 (char.IsWhiteSpace(ch) && ch != ' '))
                             {
-                                sb.Append("\\u" + ((int)ch).ToString("x4"));
+                                sb.Append("\\u").Append(((int)ch).ToString("x4"));
                             }
                             else {
                                 sb.Append(ch);

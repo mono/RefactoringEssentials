@@ -803,7 +803,7 @@ namespace RefactoringEssentials.CSharp.Diagnostics
                 string baseString = result.ToString();
                 foreach (var str in AllowedPrefixes)
                 {
-                    result.Append(", " + str + baseString);
+                    result.Append(", ").Append(str).Append(baseString);
                 }
             }
             return result.ToString();

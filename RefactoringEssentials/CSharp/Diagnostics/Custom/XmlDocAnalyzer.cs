@@ -163,7 +163,7 @@ namespace RefactoringEssentials.CSharp.Diagnostics
                 foreach (var cmt in storedXmlComment)
                 {
                     OffsetTable.Add(xml.Length - firstline.Length);
-                    xml.Append(cmt.Content + "\n");
+                    xml.Append(cmt.Content).Append('\n');
                 }
                 xml.Append("</root>\n");
 

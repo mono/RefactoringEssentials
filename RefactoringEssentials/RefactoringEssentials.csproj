@@ -1,10 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\..\..\MonoDevelop.props" Condition="Exists('..\..\..\MonoDevelop.props')" />
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>RefactoringEssentials</AssemblyName>
     <RootNamespace>RefactoringEssentials</RootNamespace>
-    <PackageTargetFallback>portable-net45+win8</PackageTargetFallback>
     <Company>ICSharpCode</Company>
     <Description>Analyzers and Code Fixes for Visual Studio 2017 (Roslyn-based).</Description>
     <Product>Refactoring Essentials for Visual Studio 2017</Product>
@@ -16,19 +15,20 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);Samples\**\*</DefaultItemExcludes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;DEBUG;NETSTANDARD1_3;NETSTANDARD1_3</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>TRACE;RELEASE;NETSTANDARD1_3;RE2017</DefineConstants>
+    <DefineConstants>TRACE;RELEASE;NETSTANDARD2_0;RE2017</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(NuGetVersionRoslyn)' == '' ">
-    <NuGetVersionRoslyn>2.10.0-beta2-63315-04</NuGetVersionRoslyn>
+    <NuGetVersionRoslyn>2.11.0-beta2-63528-05</NuGetVersionRoslyn>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(NuGetVersionRoslyn)" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="$(NuGetVersionRoslyn)" />
     <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic" Version="$(NuGetVersionRoslyn)" />
     <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="$(NuGetVersionRoslyn)" />
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="1.1.11" />
   </ItemGroup>
   <ItemGroup>
     <None Update="RefactoringEssentials.Library.nuspec">

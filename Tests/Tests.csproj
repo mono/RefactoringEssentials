@@ -9,7 +9,7 @@
     <ProjectGuid>{21DBA1CE-AF55-4159-B04B-B8C621BE8921}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>RefactoringEssentials.Tests</RootNamespace>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <NuGetPackageImportStamp>

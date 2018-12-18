@@ -1,5 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\..\..\MonoDevelop.props" Condition="Exists('..\..\..\MonoDevelop.props')" />
+  <PropertyGroup>
+    <MDProps>..\..\..\MonoDevelop.props</MDProps>
+  </PropertyGroup>
+  <Import Project="$(MDProps)" Condition="Exists('$(MDProps)')" />
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
     <AssemblyName>RefactoringEssentials</AssemblyName>
@@ -20,15 +23,28 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE;RELEASE;NETSTANDARD2_0;RE2017</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition="Exists('$(MDProps)')">
+    <PackageExclude>all</PackageExclude>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(NuGetVersionRoslyn)' == '' ">
     <NuGetVersionRoslyn>2.11.0-beta3-63519-01</NuGetVersionRoslyn>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(NuGetVersionRoslyn)" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="$(NuGetVersionRoslyn)" />
-    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic" Version="$(NuGetVersionRoslyn)" />
-    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="$(NuGetVersionRoslyn)" />
-    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="1.1.11" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(NuGetVersionRoslyn)">
+      <PrivateAssets Condition=" '$(PackageExclude)' != '' ">all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="$(NuGetVersionRoslyn)">
+      <PrivateAssets Condition=" '$(PackageExclude)' != '' ">all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic" Version="$(NuGetVersionRoslyn)">
+      <PrivateAssets Condition=" '$(PackageExclude)' != '' ">all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="$(NuGetVersionRoslyn)">
+      <PrivateAssets Condition=" '$(PackageExclude)' != '' ">all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="1.1.11">
+      <PrivateAssets Condition=" '$(PackageExclude)' != '' ">all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <None Update="RefactoringEssentials.Library.nuspec">

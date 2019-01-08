@@ -1,10 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\..\..\MonoDevelop.props" Condition="Exists('..\..\..\MonoDevelop.props')" />
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>RefactoringEssentials</AssemblyName>
     <RootNamespace>RefactoringEssentials</RootNamespace>
-    <PackageTargetFallback>portable-net45+win8</PackageTargetFallback>
     <Company>ICSharpCode</Company>
     <Description>Analyzers and Code Fixes for Visual Studio 2017 (Roslyn-based).</Description>
     <Product>Refactoring Essentials for Visual Studio 2017</Product>
@@ -22,7 +21,7 @@
     <DefineConstants>TRACE;RELEASE;NETSTANDARD1_3;RE2017</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(NuGetVersionRoslyn)' == '' ">
-    <NuGetVersionRoslyn>2.10.0-beta2-63315-04</NuGetVersionRoslyn>
+    <NuGetVersionRoslyn>3.0.0-beta2-19055-09</NuGetVersionRoslyn>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(NuGetVersionRoslyn)" />

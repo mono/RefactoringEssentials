@@ -44,8 +44,8 @@ namespace RefactoringEssentials.CSharp.Diagnostics
                       || node.Right.IsKind(SyntaxKind.SimpleLambdaExpression)
                       || node.Right.IsKind(SyntaxKind.ParenthesizedLambdaExpression)))
                 return false;
-            var rr = nodeContext.SemanticModel.GetSymbolInfo(node.Left);
-            if (rr.Symbol.Kind != SymbolKind.Event)
+            var symbol = nodeContext.SemanticModel.GetSymbolInfo(node.Left).Symbol;
+            if (symbol == null || symbol.Kind != SymbolKind.Event)
                 return false;
             diagnostic = Diagnostic.Create(
                 descriptor,

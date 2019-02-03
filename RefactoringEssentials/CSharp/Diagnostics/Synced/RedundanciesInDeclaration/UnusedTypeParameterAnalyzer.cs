@@ -79,7 +79,7 @@ namespace RefactoringEssentials.CSharp.Diagnostics
             {
                 base.VisitIdentifierName(node);
                 var symbol = nodeContext.SemanticModel.GetSymbolInfo(node).Symbol;
-                if (symbol.IsKind(SymbolKind.TypeParameter))
+                if (symbol != null && symbol.IsKind(SymbolKind.TypeParameter))
                     UsedTypeParameters.Add(symbol);
             }
 

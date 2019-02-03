@@ -219,6 +219,9 @@ namespace RefactoringEssentials.CSharp.CodeRefactorings
 
         bool IsLinqSummableType(ITypeSymbol type)
         {
+			if (type == null)
+				return false;
+
             // Disabled for nullables, since int? x = 3; x += null; has result x = null,
             // but LINQ Sum behaves differently : nulls are treated as zero
             switch (type.SpecialType) {

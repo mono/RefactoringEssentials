@@ -68,6 +68,8 @@ namespace RefactoringEssentials.CSharp.CodeRefactorings
                             if (declaration.Type.ToString() == "var")
                             {
                                 var type = semanticModel.GetTypeInfo(declaration.Type).Type;
+								if (type == null)
+									return Task.FromResult(document);
 
                                 newDeclarationType = SyntaxFactory.ParseTypeName(type.ToMinimalDisplayString(semanticModel, declaration.SpanStart))
                                     .WithLeadingTrivia(declaration.Type.GetLeadingTrivia())

@@ -31,15 +31,19 @@ namespace RefactoringEssentials.CSharp.Diagnostics
             var diagnostics = context.Diagnostics;
             var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
             var root = semanticModel.SyntaxTree.GetRoot(cancellationToken);
-            var diagnostic = diagnostics.First();
+            var diagnostic = diagnostics.FirstOrDefault();
+            if (diagnostic == null)
+                return;
+                
             var node = root.FindNode(context.Span);
             if (node == null)
                 return;
-            var symbol = semanticModel.GetSymbolInfo(node.Parent).Symbol;
-            if (symbol == null)
+                
+            var containingType = semanticModel.GetSymbolInfo(node.Parent).Symbol?.ContainingType;
+            if (containingType == null)
                 return;
             
-            var newType = symbol.ContainingType.ToMinimalDisplayString(semanticModel, node.SpanStart);
+            var newType = containingType.ToMinimalDisplayString(semanticModel, node.SpanStart);
             var newRoot = root.ReplaceNode((SyntaxNode)node, SyntaxFactory.ParseTypeName(newType).WithLeadingTrivia(node.GetLeadingTrivia()));
             context.RegisterCodeFix(CodeActionFactory.Create(node.Span, diagnostic.Severity, string.Format("Use base qualifier '{0}'", newType), document.WithSyntaxRoot(newRoot)), diagnostic);
         }

@@ -35,8 +35,11 @@ namespace RefactoringEssentials.CSharp.Diagnostics
             var node = root.FindNode(context.Span);
             if (node == null)
                 return;
-            var typeInfo = semanticModel.GetSymbolInfo(node.Parent);
-            var newType = typeInfo.Symbol.ContainingType.ToMinimalDisplayString(semanticModel, node.SpanStart);
+            var symbol = semanticModel.GetSymbolInfo(node.Parent).Symbol;
+            if (symbol == null)
+                return;
+            
+            var newType = symbol.ContainingType.ToMinimalDisplayString(semanticModel, node.SpanStart);
             var newRoot = root.ReplaceNode((SyntaxNode)node, SyntaxFactory.ParseTypeName(newType).WithLeadingTrivia(node.GetLeadingTrivia()));
             context.RegisterCodeFix(CodeActionFactory.Create(node.Span, diagnostic.Severity, string.Format("Use base qualifier '{0}'", newType), document.WithSyntaxRoot(newRoot)), diagnostic);
         }

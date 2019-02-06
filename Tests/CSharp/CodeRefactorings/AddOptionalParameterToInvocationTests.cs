@@ -94,6 +94,84 @@ class TestClass
         }
 
         [Fact]
+        public void TestExtensionMethod2()
+        {
+            Test<AddOptionalParameterToInvocationCodeRefactoringProvider>(@"
+static class Extensions
+{
+    public static void Foo(this string self, string a, string msg = ""Hello"") {}
+}
+class TestClass
+{
+    public void Bar() {
+        ""test"".$Foo(""thing"");
+    }
+}", @"
+static class Extensions
+{
+    public static void Foo(this string self, string a, string msg = ""Hello"") {}
+}
+class TestClass
+{
+    public void Bar() {
+        ""test"".Foo(""thing"", ""Hello"");
+    }
+}");
+        }
+
+        [Fact]
+        public void TestExtensionMethodNonReducedForm()
+        {
+            Test<AddOptionalParameterToInvocationCodeRefactoringProvider>(@"
+static class Extensions
+{
+    public static void Foo(this string self, string msg = ""Hello"") {}
+}
+class TestClass
+{
+    public void Bar() {
+        Extensions.$Foo (""test"");
+    }
+}", @"
+static class Extensions
+{
+    public static void Foo(this string self, string msg = ""Hello"") {}
+}
+class TestClass
+{
+    public void Bar() {
+        Extensions.Foo(""test"", ""Hello"");
+    }
+}");
+        }
+
+        [Fact]
+        public void TestExtensionMethodNonReducedForm2()
+        {
+            Test<AddOptionalParameterToInvocationCodeRefactoringProvider>(@"
+static class Extensions
+{
+    public static void Foo(this string self, string a, string msg = ""Hello"") {}
+}
+class TestClass
+{
+    public void Bar() {
+        Extensions.$Foo (""test"", ""thing"");
+    }
+}", @"
+static class Extensions
+{
+    public static void Foo(this string self, string a, string msg = ""Hello"") {}
+}
+class TestClass
+{
+    public void Bar() {
+        Extensions.Foo(""test"", ""thing"", ""Hello"");
+    }
+}");
+        }
+
+        [Fact]
         public void TestMultiple2()
         {
             Test<AddOptionalParameterToInvocationCodeRefactoringProvider>(@"

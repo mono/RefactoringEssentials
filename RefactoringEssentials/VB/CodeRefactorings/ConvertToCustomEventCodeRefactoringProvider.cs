@@ -40,7 +40,7 @@ namespace RefactoringEssentials.VB.CodeRefactorings
                 return;
 
             var delegateType = model.GetTypeInfo(eventStatement.AsClause.Type).Type;
-            if (delegateType.IsErrorType() || !delegateType.IsDelegateType())
+            if (delegateType == null || delegateType.IsErrorType() || !delegateType.IsDelegateType())
                 return;
             var delegateParameters = delegateType.GetDelegateInvokeMethod().Parameters;
 

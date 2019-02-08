@@ -50,6 +50,9 @@ namespace RefactoringEssentials.CSharp.CodeRefactorings
                 t2 =>
                 {
                     var expressionTypeInfo = model.GetTypeInfo(foreachStatement.Expression);
+					if (expressionTypeInfo.Type == null)
+						return Task.FromResult(document);
+
                     var countProperty = GetCountProperty(expressionTypeInfo.Type);
                     var inExpression = foreachStatement.Expression;
                     var initializer = hasIndexAccess ?
@@ -191,7 +194,10 @@ namespace RefactoringEssentials.CSharp.CodeRefactorings
                     t2 =>
                     {
                         var expressionTypeInfo = model.GetTypeInfo(foreachStatement.Expression);
-                        var countProperty = GetCountProperty(expressionTypeInfo.Type);
+						if (expressionTypeInfo.Type == null)
+							return Task.FromResult(document);
+
+						var countProperty = GetCountProperty(expressionTypeInfo.Type);
                         var inExpression = foreachStatement.Expression;
 
                         string optimizedUpperBound = GetBoundName(inExpression) + countProperty;

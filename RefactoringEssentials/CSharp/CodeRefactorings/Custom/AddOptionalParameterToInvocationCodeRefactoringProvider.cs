@@ -47,9 +47,9 @@ namespace RefactoringEssentials.CSharp.CodeRefactorings
             if (method == null)
                 return;
 
-
+            var parameters = method.Parameters;
             bool foundOptionalParameter = false;
-            foreach (var parameter in method.Parameters)
+            foreach (var parameter in parameters)
             {
                 if (parameter.IsParams)
                 {
@@ -65,8 +65,8 @@ namespace RefactoringEssentials.CSharp.CodeRefactorings
                 return;
 
             //Basic sanity checks done, now see if there are any missing optional arguments
-            var missingParameters = new List<IParameterSymbol>(method.Parameters);
-            if (method.Parameters.Length != invocationExpression.ArgumentList.Arguments.Count)
+            var missingParameters = new List<IParameterSymbol>(parameters);
+            if (method.IsReducedExtension () && parameters.Length != invocationExpression.ArgumentList.Arguments.Count)
             {
                 //Extension method
                 if (missingParameters[0].IsThis)

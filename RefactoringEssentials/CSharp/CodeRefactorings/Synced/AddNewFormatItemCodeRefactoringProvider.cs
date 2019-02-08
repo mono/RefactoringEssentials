@@ -62,8 +62,7 @@ namespace RefactoringEssentials.CSharp.CodeRefactorings
                         {
                             invocationExpression = (InvocationExpressionSyntax)parent.Parent.Parent.Parent;
                             var info = model.GetSymbolInfo(invocationExpression);
-                            var method = info.Symbol as IMethodSymbol;
-                            if (method.Name == "Format" && method.ContainingType.SpecialType == SpecialType.System_String)
+                            if (info.Symbol is IMethodSymbol method && method.Name == "Format" && method.ContainingType.SpecialType == SpecialType.System_String)
                             {
                                 argumentNumber = invocationExpression.ArgumentList.Arguments.Count - 1;
                             }

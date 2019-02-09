@@ -59,7 +59,7 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(NuGetVersionRoslyn)' == '' ">
-    <NuGetVersionRoslyn>2.10.0-beta2-63315-04</NuGetVersionRoslyn>
+    <NuGetVersionRoslyn>3.0.0-beta2-19055-09</NuGetVersionRoslyn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />

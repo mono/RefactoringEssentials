@@ -1,14 +1,16 @@
 using RefactoringEssentials.CSharp;
 using RefactoringEssentials.Tests.CSharp.CodeRefactorings;
+
 using Xunit;
 
 namespace RefactoringEssentials.Tests.CSharp
 {
-	/// <summary>
-	/// Tests for AddNullCheckCodeRefactoringProvider.
-	/// </summary>
+    /// <summary>
+    /// Tests for AddNullCheckCodeRefactoringProvider.
+    /// </summary>
     public class AddNullCheckTests : CSharpCodeRefactoringTestBase
     {
+
         [Fact]
         public void TestSingleExpression()
         {
@@ -719,6 +721,54 @@ class TestClass
     public void TestMethod(IEnumerable<string> list)
     {
         Console.WriteLine(($list != null ? list.First() : "");
+    }
+}");
+        }
+
+        /// <summary>
+        /// Bug 801812: Fix null check includes extra stuff, produces a code error
+        /// </summary>
+        [Fact]
+        public void TestVSTSBug801812()
+        {
+            TestWrongContext<AddNullCheckCodeRefactoringProvider>(@"
+using System;
+using System.Collections.Generic;
+
+class TestClass
+{
+    public void TestMethod()
+    {
+        $_ = new object ();
+    }
+}");
+        }
+
+        [Fact]
+        public void TestVSTSBug801812_Part2()
+        {
+            Test<AddNullCheckCodeRefactoringProvider>(@"
+using System;
+
+class TestClass
+{
+    public void TestMethod(string str)
+    {
+        // test
+        Console.WriteLine($str);
+    }
+}", @"
+using System;
+
+class TestClass
+{
+    public void TestMethod(string str)
+    {
+        if (str != null)
+        {
+            // test
+            Console.WriteLine(str);
+        }
     }
 }");
         }

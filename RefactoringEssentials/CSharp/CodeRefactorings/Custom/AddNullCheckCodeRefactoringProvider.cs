@@ -37,7 +37,7 @@ namespace RefactoringEssentials.CSharp
 
             // If identifier is a type name, this might be a static member access or similar, don't suggest null checks on it
             var identifierSymbol = model.GetSymbolInfo(identifier).Symbol;
-            if ((identifierSymbol == null) || (identifierSymbol.IsType()))
+            if (identifierSymbol == null || identifierSymbol.IsType() || identifierSymbol is IDiscardSymbol)
                 return;
 
             // Identifier might be part of a MemberAccessExpression and we need to check it for null as a whole
@@ -97,7 +97,7 @@ namespace RefactoringEssentials.CSharp
                 {
                     newWrappedStatement = SyntaxFactory.IfStatement(
                             SyntaxFactory.BinaryExpression(SyntaxKind.NotEqualsExpression, identifier, SyntaxFactory.LiteralExpression(SyntaxKind.NullLiteralExpression)),
-                            SyntaxFactory.Block(statementToWrap).WithLeadingTrivia(statementToWrap.GetLeadingTrivia()).WithTrailingTrivia(statementToWrap.GetTrailingTrivia())
+                            SyntaxFactory.Block(statementToWrap).WithTrailingTrivia(statementToWrap.GetTrailingTrivia())
                         ).WithAdditionalAnnotations(Formatter.Annotation);
                 }
             }

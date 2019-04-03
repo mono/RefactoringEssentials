@@ -24,10 +24,8 @@
     <NuGetVersionRoslyn>3.0.0-beta4-19157-04</NuGetVersionRoslyn>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(NuGetVersionRoslyn)" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="$(NuGetVersionRoslyn)" />
-    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic" Version="$(NuGetVersionRoslyn)" />
-    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="$(NuGetVersionRoslyn)" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="$(NuGetVersionRoslyn)" />
+	<PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="1.1.12" />
   </ItemGroup>
   <ItemGroup>
     <None Update="RefactoringEssentials.Library.nuspec">

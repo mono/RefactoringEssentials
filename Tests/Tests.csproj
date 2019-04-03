@@ -170,7 +170,6 @@
     <Compile Include="CSharp\CodeRefactorings\IntroduceConstantTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\IntroduceFormatItemTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\InvertConditionalOperatorTests.cs" />
-    <Compile Include="CSharp\CodeRefactorings\InvertLogicalExpressionTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\InvokeAsStaticMethodTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\IterateViaForeachTests.cs" />
     <Compile Include="CSharp\CodeRefactorings\JoinLocalVariableDeclarationAndAssignmentTests.cs" />
@@ -271,7 +270,6 @@
     <Compile Include="CSharp\Diagnostics\OptionalParameterRefOutTests.cs" />
     <Compile Include="CSharp\Diagnostics\ParameterCanBeDemotedIssue\ParameterCanBeDeclaredWithBaseTypeIssueTests.cs" />
     <Compile Include="CSharp\Diagnostics\ParameterHidesMemberTests.cs" />
-    <Compile Include="CSharp\Diagnostics\ParameterOnlyAssignedTests.cs" />
     <Compile Include="CSharp\Diagnostics\PartialMethodParameterNameMismatchTests.cs" />
     <Compile Include="CSharp\Diagnostics\PartialTypeWithSinglePartTests.cs" />
     <Compile Include="CSharp\Diagnostics\PolymorphicFieldLikeEventInvocationTests.cs" />
@@ -335,7 +333,6 @@
     <Compile Include="CSharp\Diagnostics\StringStartsWithIsCultureSpecificTests.cs" />
     <Compile Include="CSharp\Diagnostics\ThreadStaticAtInstanceFieldTests.cs" />
     <Compile Include="CSharp\Diagnostics\UnusedAnonymousMethodSignatureTests.cs" />
-    <Compile Include="CSharp\Diagnostics\UnusedParameterTests.cs" />
     <Compile Include="CSharp\Diagnostics\UnusedTypeParameterTests.cs" />
     <Compile Include="CSharp\Diagnostics\UseArrayCreationExpressionTests.cs" />
     <Compile Include="CSharp\Diagnostics\UseIsOperatorTests.cs" />

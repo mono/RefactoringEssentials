@@ -46,7 +46,8 @@ namespace RefactoringEssentials.CSharp.Diagnostics
 						extensionParameter = syntax.GetRightmostName ();
 				}
 
-				if (TryGetDiagnostic (memberAccessSyntax, method.ContainingType, extensionParameter, out var diagnostic))
+				var semanticModel = ctx.Compilation.GetSemanticModel(memberAccessSyntax.SyntaxTree);
+				if (TryGetDiagnostic (memberAccessSyntax, method.ContainingType, extensionParameter, semanticModel, out var diagnostic))
 					ctx.ReportDiagnostic(Diagnostic.Create(descriptor, memberAccessSyntax.Expression.GetLocation()));
 			}, OperationKind.Invocation);
 
@@ -57,12 +58,13 @@ namespace RefactoringEssentials.CSharp.Diagnostics
 				if (!member.IsStatic || !(memberReference.Syntax is MemberAccessExpressionSyntax memberAccessSyntax))
 					return;
 
-				if (TryGetDiagnostic(memberAccessSyntax, member.ContainingType, null, out var diagnostic))
+				var semanticModel = ctx.Compilation.GetSemanticModel(memberAccessSyntax.SyntaxTree);
+				if (TryGetDiagnostic(memberAccessSyntax, member.ContainingType, null, semanticModel, out var diagnostic))
 					ctx.ReportDiagnostic(Diagnostic.Create(descriptor, memberAccessSyntax.Expression.GetLocation()));
 			}, OperationKind.PropertyReference, OperationKind.FieldReference, OperationKind.MethodReference, OperationKind.EventReference);
 		}
 
-		static bool TryGetDiagnostic(MemberAccessExpressionSyntax memberAccessSyntax, ITypeSymbol containingType, SyntaxNode extensionParameter, out Diagnostic diagnostic)
+		static bool TryGetDiagnostic(MemberAccessExpressionSyntax memberAccessSyntax, ITypeSymbol containingType, SyntaxNode extensionParameter, SemanticModel model, out Diagnostic diagnostic)
 		{
 			diagnostic = default(Diagnostic);
 
@@ -78,6 +80,10 @@ namespace RefactoringEssentials.CSharp.Diagnostics
 				return false;
 
 			if (CheckCuriouslyRecurringTemplatePattern(containingType, rightMostType))
+				return false;
+
+			var alias = model.GetAliasInfo(rightMostName);
+			if (alias != null && alias.Target.Name == containingType.Name)
 				return false;
 
 			diagnostic = Diagnostic.Create(

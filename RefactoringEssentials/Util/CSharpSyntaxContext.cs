@@ -409,8 +409,7 @@ namespace RefactoringEssentials
         static CSharpTypeInferenceService()
         {
             typeInfo = Type.GetType("Microsoft.CodeAnalysis.CSharp.CSharpTypeInferenceService" + ReflectionNamespaces.CSWorkspacesAsmName, true);
-            baseTypeInfo = Type.GetType("Microsoft.CodeAnalysis.LanguageServices.TypeInferenceService.AbstractTypeInferenceService`1" + ReflectionNamespaces.WorkspacesAsmName, true)
-                .MakeGenericType(typeof(ExpressionSyntax));
+			baseTypeInfo = Type.GetType("Microsoft.CodeAnalysis.LanguageServices.TypeInferenceService.AbstractTypeInferenceService" + ReflectionNamespaces.WorkspacesAsmName, true);
             inferTypesMethod = baseTypeInfo.GetMethod("InferTypes", new[] {
                 typeof(SemanticModel),
                 typeof(int),

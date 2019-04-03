@@ -46,7 +46,16 @@ namespace RefactoringEssentials.CSharp.Diagnostics
             if (switchSections.Count(s => !s.Labels.OfType<DefaultSwitchLabelSyntax>().Any()) <= 2)
                 return;
 
-            var switchStatement = SyntaxFactory.SwitchStatement(switchExpr, new SyntaxList<SwitchSectionSyntax>().AddRange(switchSections));
+            var switchStatement = SyntaxFactory.SwitchStatement(
+				SyntaxFactory.Token(SyntaxKind.SwitchKeyword),
+				SyntaxFactory.Token(SyntaxKind.OpenParenToken),
+				switchExpr,
+				SyntaxFactory.Token(SyntaxKind.CloseParenToken),
+				SyntaxFactory.Token(SyntaxKind.OpenBraceToken),
+				SyntaxFactory.List(switchSections),
+				SyntaxFactory.Token(SyntaxKind.CloseBraceToken)
+			);
+
             var newRoot = root.ReplaceNode((SyntaxNode)node, switchStatement.WithAdditionalAnnotations(Formatter.Annotation));
             context.RegisterCodeFix(CodeActionFactory.Create(node.Span, diagnostic.Severity, "Convert to 'switch' statement", document.WithSyntaxRoot(newRoot)), diagnostic);
         }

@@ -47,7 +47,15 @@ namespace RefactoringEssentials.CSharp.CodeRefactorings
                     GettextCatalog.GetString("To 'switch'"),
                     ct =>
                     {
-                        var switchStatement = SyntaxFactory.SwitchStatement(switchExpr, new SyntaxList<SwitchSectionSyntax>().AddRange(switchSections));
+						var switchStatement = SyntaxFactory.SwitchStatement(
+							SyntaxFactory.Token(SyntaxKind.SwitchKeyword),
+							SyntaxFactory.Token(SyntaxKind.OpenParenToken),
+							switchExpr,
+							SyntaxFactory.Token(SyntaxKind.CloseParenToken),
+							SyntaxFactory.Token(SyntaxKind.OpenBraceToken),
+							SyntaxFactory.List(switchSections),
+							SyntaxFactory.Token(SyntaxKind.CloseBraceToken)
+						);
                         return Task.FromResult(document.WithSyntaxRoot(root.ReplaceNode(
                             (SyntaxNode)node, switchStatement
                             .WithLeadingTrivia(node.GetLeadingTrivia())

@@ -106,7 +106,7 @@ namespace RefactoringEssentials.CSharp.Diagnostics
                 else if (IsConstantExpression(context, binaryOp.Left))
                     switchExpr = binaryOp.Right;
                 if (switchExpr != null && IsValidSwitchType(context.GetTypeInfo(switchExpr).Type))
-                    return switchExpr;
+                    return  switchExpr;
             }
 
             return null;

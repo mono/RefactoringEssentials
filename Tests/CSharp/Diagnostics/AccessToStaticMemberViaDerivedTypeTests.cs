@@ -354,6 +354,18 @@ class Test
 	}
 }");
         }
+
+        [Fact]
+        public void IgnoreAliasedNames()
+        {
+            Analyze<AccessToStaticMemberViaDerivedTypeAnalyzer>(@"
+using real_t = System.Single;
+
+class Stub
+{
+    public static real_t NaN => real_t.NaN;
+}");
+        }
     }
 }
 

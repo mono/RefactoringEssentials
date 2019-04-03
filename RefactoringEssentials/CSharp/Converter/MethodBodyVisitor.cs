@@ -250,7 +250,15 @@ namespace RefactoringEssentials.CSharp.Converter
 					var list = SyntaxFactory.List(block.Statements.SelectMany(s => s.Accept(this)).Concat(SyntaxFactory.BreakStatement()));
 					sections.Add(SyntaxFactory.SwitchSection(SyntaxFactory.List(labels), list));
 				}
-				switchStatement = SyntaxFactory.SwitchStatement(expr, SyntaxFactory.List(sections));
+				switchStatement = SyntaxFactory.SwitchStatement(
+					SyntaxFactory.Token(SyntaxKind.SwitchKeyword),
+					SyntaxFactory.Token(SyntaxKind.OpenParenToken),
+					expr,
+					SyntaxFactory.Token(SyntaxKind.CloseParenToken),
+					SyntaxFactory.Token(SyntaxKind.OpenBraceToken),
+					SyntaxFactory.List(sections),
+					SyntaxFactory.Token(SyntaxKind.CloseBraceToken)
+				);
 				return true;
 			}
 

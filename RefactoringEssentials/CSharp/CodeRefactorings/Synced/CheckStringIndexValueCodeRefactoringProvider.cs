@@ -38,7 +38,7 @@ namespace RefactoringEssentials.CSharp.CodeRefactorings
             if (elementAccess == null)
                 return;
             var elementType = model.GetTypeInfo(elementAccess.Expression);
-            if (elementType.Type == null || elementType.Type.SpecialType != SpecialType.System_String)
+            if (!IsTypeSupported (elementType.Type))
                 return;
 
             var argument = elementAccess.ArgumentList.Arguments.FirstOrDefault();
